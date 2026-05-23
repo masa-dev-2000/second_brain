@@ -1,6 +1,6 @@
-# GitHub Trending 2026/05/22 — 上位40リポジトリ
+# GitHub Trending 2026/05 — 厳選リポジトリナレッジベース
 
-2026年5月22日時点のGitHubトレンド上位40リポジトリを、カテゴリ別に整理したナレッジベース。
+2026年5月時点のGitHubトレンドから厳選したリポジトリを、カテゴリ別に整理したナレッジベース。
 
 ---
 
@@ -15,10 +15,17 @@
 | [05_data-intelligence](./05_data-intelligence/) | データ・インテリジェンス | 5 | センシング・分析・知識ベース |
 | [06_infra-devtools](./06_infra-devtools/) | インフラ・開発ツール | 4 | API・ERP・ターミナル |
 | [07_media-learning](./07_media-learning/) | メディア・学習 | 3 | プレーヤー・カリキュラム |
+| [08_rag-second-brain](./08_rag-second-brain/) | RAG・セカンドブレイン | 5 | ローカルRAG・グラフRAG・セカンドブレイン |
+| [09_image-generation](./09_image-generation/) | 画像生成 | 2 | ComfyUI・AI画像編集 |
+| [10_productivity-tools](./10_productivity-tools/) | 生産性ツール | 4 | 会議録・Wiki・家計管理 |
+| [11_web-scraping](./11_web-scraping/) | Webスクレイピング | 2 | LLM対応クローラー |
+| [12_mlops](./12_mlops/) | MLOps | 1 | ML実験管理・モデルライフサイクル |
+| [13_mcp-ecosystem](./13_mcp-ecosystem/) | MCPエコシステム | 2 | MCPサーバー集・MCP対応IDE |
+| [14_token-optimization](./14_token-optimization/) | トークン最適化 | 6 | コスト削減・キャッシング・可観測性 |
 
 ---
 
-## 全40リポジトリ早見表
+## リポジトリ早見表
 
 | 順位 | リポジトリ | 本日のスター | カテゴリ |
 |-----|-----------|------------|---------|
@@ -62,6 +69,28 @@
 | #38 | [worldmonitor](./05_data-intelligence/04_worldmonitor.md) | +198 | データ |
 | #39 | [rtk](./03_ai-platforms/05_rtk.md) | +234 | AIプラットフォーム |
 | #40 | [superpowers（後半）](./02_agent-frameworks-skills/01_superpowers.md) | — | エージェント |
+| — | [khoj](./08_rag-second-brain/01_khoj.md) | — | RAG・セカンドブレイン |
+| — | [LightRAG](./08_rag-second-brain/02_lightrag.md) | — | RAG・セカンドブレイン |
+| — | [GraphRAG](./08_rag-second-brain/03_graphrag.md) | — | RAG・セカンドブレイン |
+| — | [RAG_Techniques](./08_rag-second-brain/04_rag-techniques.md) | — | RAG・セカンドブレイン |
+| — | [local-deep-research](./08_rag-second-brain/05_local-deep-research.md) | — | RAG・セカンドブレイン |
+| — | [ComfyUI](./09_image-generation/01_comfyui.md) | — | 画像生成 |
+| — | [jaaz](./09_image-generation/02_jaaz.md) | — | 画像生成 |
+| — | [Meetily](./10_productivity-tools/01_meetily.md) | — | 生産性ツール |
+| — | [AppFlowy](./10_productivity-tools/02_appflowy.md) | — | 生産性ツール |
+| — | [Docmost](./10_productivity-tools/03_docmost.md) | — | 生産性ツール |
+| — | [Wallos](./10_productivity-tools/04_wallos.md) | — | 生産性ツール |
+| — | [Crawlee](./11_web-scraping/01_crawlee.md) | — | Webスクレイピング |
+| — | [Crawlee-Python](./11_web-scraping/02_crawlee-python.md) | — | Webスクレイピング |
+| — | [MLflow](./12_mlops/01_mlflow.md) | — | MLOps |
+| — | [awesome-mcp-servers](./13_mcp-ecosystem/01_awesome-mcp-servers.md) | — | MCPエコシステム |
+| — | [5ire](./13_mcp-ecosystem/02_5ire.md) | — | MCPエコシステム |
+| — | [Langfuse](./14_token-optimization/01_langfuse.md) | — | トークン最適化 |
+| — | [LiteLLM](./14_token-optimization/02_litellm.md) | — | トークン最適化 |
+| — | [OpenLit](./14_token-optimization/03_openlit.md) | — | トークン最適化 |
+| — | [LLMLingua](./14_token-optimization/04_llmlingua.md) | — | トークン最適化 |
+| — | [GPTCache](./14_token-optimization/05_gptcache.md) | — | トークン最適化 |
+| — | [プロバイダー機能](./14_token-optimization/06_provider-features.md) | — | トークン最適化 |
 
 ---
 
