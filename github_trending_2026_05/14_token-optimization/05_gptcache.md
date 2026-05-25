@@ -223,25 +223,21 @@ cache.init(
 client = anthropic.Anthropic()
 
 def answer_helpdesk(question: str) -> dict:
-    # GPTCacheが透過的にキャッシュを確認
-    # （キャッシュヒットすればここでAPIは呼ばれない）
+    # GPTCacheは透過的に動作する:
+    # キャッシュヒット → キャッシュから即返却（APIは呼ばれない）
+    # キャッシュミス  → APIを呼び出し、結果をキャッシュに保存して返却
+    response = client.messages.create(
+        model="claude-haiku-4-5-20251001",
+        max_tokens=512,
+        messages=[{
+            "role": "user",
+            "content": f"社内ヘルプデスクとして以下の質問に答えてください: {question}"
+        }],
+    )
+    answer = response.content[0].text
     
-    # キャッシュ状況を記録するためのラッパー
-    cache_hit = False
-    
-    try:
-        response = client.messages.create(
-            model="claude-haiku-4-5-20251001",
-            max_tokens=512,
-            messages=[{
-                "role": "user",
-                "content": f"社内ヘルプデスクとして以下の質問に答えてください: {question}"
-            }],
-        )
-        answer = response.content[0].text
-    except Exception:
-        cache_hit = True
-        answer = cache.get(question)  # キャッシュから取得
+    # キャッシュヒット判定: usage.cache_read_input_tokens > 0 ならヒット
+    cache_hit = getattr(response.usage, "cache_read_input_tokens", 0) > 0
     
     return {"answer": answer, "cache_hit": cache_hit}
 
