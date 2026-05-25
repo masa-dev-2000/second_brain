@@ -16,6 +16,8 @@ WhatsApp APIゲートウェイ・ERPシステム・プロキシパネル・AIタ
 | 34 | [02_erpnext.md](./02_erpnext.md) | frappe/erpnext | 24,156 | OSS ERP（SAP代替）会計・在庫・製造 |
 | 35 | [03_s-ui.md](./03_s-ui.md) | alireza0/s-ui | 18,934 | Sing-Box プロキシ WebUIパネル |
 | 36 | [04_waveterm.md](./04_waveterm.md) | wavetermdev/waveterm | 29,743 | AI統合・SSH持続接続・ファイルエディタ統合ターミナル |
+| — | [05_cmux.md](./05_cmux.md) | manaflow-ai/cmux | 19,078 | AIコーディングエージェント向けmacOSターミナル（縦タブ・通知） |
+| — | [06_frigate.md](./06_frigate.md) | blakeblackshear/frigate | 32,895 | ローカルリアルタイム物体検知NVR（IPカメラ・Home Assistant連携） |
 
 ---
 

@@ -17,6 +17,9 @@ WiFiセンシング・ドキュメント変換・株式分析・地政学イン�
 | 30 | [03_daily-stock-analysis.md](./03_daily-stock-analysis.md) | ZhuLinsen/daily_stock_analysis | 38,326 | AI株式分析を毎日Telegram/Discordに配信 |
 | 31 | [04_worldmonitor.md](./04_worldmonitor.md) | worldmonitor/worldmonitor | 47,812 | 500+フィード統合の地政学インテリジェンスダッシュボード |
 | 32 | [05_the-book-of-secret-knowledge.md](./05_the-book-of-secret-knowledge.md) | trimstray/the-book-of-secret-knowledge | 222,405 | DevOps・セキュリティの実践チートシート集 |
+| — | [06_fincept-terminal.md](./06_fincept-terminal.md) | Fincept-Corporation/FinceptTerminal | 22,706 | オープンソースBloomberg端末代替・金融分析ターミナル |
+| — | [07_kronos.md](./07_kronos.md) | shiyu-coder/Kronos | 25,833 | 金融市場言語向けFoundation Model |
+| — | [08_mirofish.md](./08_mirofish.md) | 666ghj/MiroFish | 62,236 | 汎用群知能（Swarm Intelligence）予測エンジン |
 
 ---
 

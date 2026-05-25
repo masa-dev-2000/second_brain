@@ -22,6 +22,9 @@ Claude Code・Cursor・Copilot等のAIコーディングツールを強化する
 | 8 | [08_openai-codex.md](./08_openai-codex.md) | openai/codex | 67,432 | OpenAIターミナルコーディングエージェント |
 | 9 | [09_gemini-cli.md](./09_gemini-cli.md) | google-gemini/gemini-cli | 54,876 | Google Geminiターミナルエージェント |
 | 10 | [10_stitch-skills.md](./10_stitch-skills.md) | google/stitch-skills | 19,847 | Google StitchのデザインをコードにするAIスキル |
+| — | [11_awesome-claude-code.md](./11_awesome-claude-code.md) | hesreallyhim/awesome-claude-code | 44,562 | Claude Code Skills・Hooks・プラグインのawesome list |
+| — | [12_knowledge-work-plugins.md](./12_knowledge-work-plugins.md) | anthropics/knowledge-work-plugins | 14,186 | Anthropic公式 Claude Cowork ナレッジワーカー向けプラグイン集 |
+| — | [13_cybersecurity-skills.md](./13_cybersecurity-skills.md) | mukul975/Anthropic-Cybersecurity-Skills | 8,465 | AIエージェント向けサイバーセキュリティスキル754個 |
 
 ---
 
