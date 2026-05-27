@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>七度転んで、ひとつのエンジンができた</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400&display=swap');
+
+  :root {
+    --page-bg: #faf8f3;
+    --text: #1a1710;
+    --text-light: #5c5646;
+    --accent: #8b4513;
+    --accent-light: #c8956c;
+    --divider: #d4c9b0;
+    --chapter-bg: #f0ebe0;
+    --page-width: 680px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #e8e0d0;
+    font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  /* ── ページ共通 ── */
+  .page {
+    background: var(--page-bg);
+    max-width: var(--page-width);
+    margin: 32px auto;
+    padding: 72px 80px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.18), 0 1px 4px rgba(0,0,0,.12);
+    min-height: 900px;
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 12px;
+    width: 3px; height: 100%;
+    background: linear-gradient(to bottom, var(--divider), transparent);
+    opacity: .4;
+  }
+
+  /* ── 表紙 ── */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 960px;
+    text-align: center;
+    background: linear-gradient(165deg, #2b1f10 0%, #4a3520 55%, #6b4c2a 100%);
+    color: #f0e6d0;
+    padding: 80px 60px;
+  }
+
+  .cover::before { display: none; }
+
+  .cover-ornament {
+    font-size: 2rem;
+    letter-spacing: .5em;
+    color: var(--accent-light);
+    opacity: .6;
+    margin-bottom: 48px;
+  }
+
+  .cover h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.6;
+    letter-spacing: .12em;
+    margin-bottom: 40px;
+    text-shadow: 0 2px 8px rgba(0,0,0,.4);
+  }
+
+  .cover-sub {
+    font-size: .95rem;
+    font-weight: 300;
+    letter-spacing: .3em;
+    color: var(--accent-light);
+    margin-bottom: 80px;
+    opacity: .85;
+  }
+
+  .cover-divider {
+    width: 80px;
+    height: 1px;
+    background: var(--accent-light);
+    margin: 0 auto 48px;
+    opacity: .5;
+  }
+
+  .cover-tag {
+    font-size: .75rem;
+    font-weight: 300;
+    letter-spacing: .4em;
+    color: #a09070;
+    text-transform: uppercase;
+  }
+
+  /* ── 目次 ── */
+  .toc-title {
+    font-size: 1rem;
+    letter-spacing: .4em;
+    color: var(--text-light);
+    text-align: center;
+    margin-bottom: 48px;
+    font-weight: 400;
+  }
+
+  .toc-list {
+    list-style: none;
+    border-top: 1px solid var(--divider);
+  }
+
+  .toc-list li {
+    border-bottom: 1px solid var(--divider);
+    padding: 0;
+  }
+
+  .toc-list a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 14px 0;
+    text-decoration: none;
+    color: var(--text);
+    font-size: .95rem;
+    line-height: 1.5;
+    transition: color .2s;
+  }
+
+  .toc-list a:hover { color: var(--accent); }
+
+  .toc-list .toc-label { flex: 1; }
+
+  .toc-list .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted var(--divider);
+    margin: 0 12px;
+    position: relative;
+    top: -4px;
+  }
+
+  .toc-list .toc-theme {
+    font-size: .78rem;
+    color: var(--text-light);
+    font-weight: 300;
+    white-space: nowrap;
+  }
+
+  .toc-list li.toc-special a {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  /* ── プロローグ・エピローグヘッダー ── */
+  .section-label {
+    font-size: .72rem;
+    letter-spacing: .5em;
+    color: var(--accent-light);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+
+  .section-title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 8px;
+    letter-spacing: .08em;
+    line-height: 1.4;
+  }
+
+  .section-sub {
+    font-size: .9rem;
+    color: var(--text-light);
+    text-align: center;
+    margin-bottom: 48px;
+    font-weight: 300;
+    letter-spacing: .1em;
+  }
+
+  /* ── 章ヘッダー ── */
+  .chapter-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .chapter-num {
+    display: inline-block;
+    font-size: .7rem;
+    letter-spacing: .5em;
+    color: var(--accent);
+    border: 1px solid var(--accent-light);
+    padding: 5px 20px;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+
+  .chapter-title {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: .08em;
+    margin-bottom: 8px;
+  }
+
+  .chapter-theme {
+    font-size: .82rem;
+    color: var(--text-light);
+    font-weight: 300;
+    letter-spacing: .25em;
+  }
+
+  /* ── 中見出し ── */
+  .scene-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 40px 0 18px;
+    padding-left: 16px;
+    border-left: 3px solid var(--accent-light);
+    letter-spacing: .06em;
+    line-height: 1.5;
+  }
+
+  /* ── 体得ボックス ── */
+  .mastery {
+    background: var(--chapter-bg);
+    border-left: 4px solid var(--accent);
+    padding: 20px 24px;
+    margin: 40px 0 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .mastery-label {
+    font-size: .68rem;
+    letter-spacing: .4em;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .mastery p {
+    font-size: .9rem;
+    line-height: 1.85;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  /* ── 本文 ── */
+  p {
+    font-size: .97rem;
+    line-height: 2;
+    margin-bottom: 1.4em;
+    text-align: justify;
+    text-justify: inter-ideograph;
+  }
+
+  p:last-child { margin-bottom: 0; }
+
+  strong {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* ── ツールバッジ ── */
+  .tool {
+    display: inline;
+    font-weight: 600;
+    color: var(--accent);
+    font-size: .9em;
+  }
+
+  /* ── 区切り線 ── */
+  .hr {
+    border: none;
+    border-top: 1px solid var(--divider);
+    margin: 40px 0;
+  }
+
+  .hr-dot {
+    text-align: center;
+    margin: 36px 0;
+    color: var(--divider);
+    letter-spacing: .8em;
+    font-size: .9rem;
+  }
+
+  /* ── ページ番号 ── */
+  .page-num {
+    position: absolute;
+    bottom: 32px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: .7rem;
+    color: var(--divider);
+    letter-spacing: .3em;
+    font-weight: 300;
+  }
+
+  /* ── クライマックス強調 ── */
+  .climax-quote {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 32px 0;
+    letter-spacing: .1em;
+    line-height: 1.8;
+  }
+
+  /* ── エピローグ体得まとめ ── */
+  .mastery-list {
+    background: var(--chapter-bg);
+    padding: 28px 32px;
+    margin: 32px 0;
+    border-radius: 4px;
+  }
+
+  .mastery-list-item {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--divider);
+    font-size: .88rem;
+    line-height: 1.7;
+  }
+
+  .mastery-list-item:last-child { border-bottom: none; }
+
+  .mastery-list-wall {
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+    min-width: 52px;
+    font-size: .8rem;
+  }
+
+  /* ── 最終ページ装飾 ── */
+  .colophon {
+    text-align: center;
+    padding-top: 80px;
+    color: var(--text-light);
+  }
+
+  .colophon .big-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .colophon .meta {
+    font-size: .75rem;
+    letter-spacing: .3em;
+    font-weight: 300;
+    line-height: 2.4;
+  }
+
+  .colophon .repo-count {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 32px 0 8px;
+    letter-spacing: -.02em;
+  }
+
+  .colophon .repo-label {
+    font-size: .75rem;
+    letter-spacing: .4em;
+    color: var(--text-light);
+  }
+
+  /* ── print ── */
+  @media print {
+    body { background: white; }
+    .page {
+      margin: 0;
+      box-shadow: none;
+      page-break-after: always;
+      min-height: auto;
+    }
+  }
+
+  /* ── スクロールバー ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #d8d0c0; }
+  ::-webkit-scrollbar-thumb { background: #b0a090; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- 表紙 -->
+<div class="page cover" id="cover">
+  <div class="cover-ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+  <div class="cover-sub">A Story of Six Walls</div>
+  <h1>七度転んで、<br>ひとつのエンジンが<br>できた</h1>
+  <div class="cover-divider"></div>
+  <div class="cover-tag">79 repositories &nbsp;·&nbsp; 6 walls &nbsp;·&nbsp; 1 year</div>
+</div>
+
+<!-- 目次 -->
+<div class="page" id="toc">
+  <p class="toc-title">目 次</p>
+  <ul class="toc-list">
+    <li class="toc-special">
+      <a href="#prologue">
+        <span class="toc-label">プロローグ　退職届</span>
+        <span class="toc-dots"></span>
+        <span class="toc-theme">すべての始まり</span>
+      </a>
+    </li>
+    <li>
+      <a href="#ch1">
+        <span class="toc-label">第一章　虚無の壁</span>
+        <span class="toc-dots"></span>
+        <span class="toc-theme">何もできない</span>
+      </a>
+    </li>
+    <li>
+      <a href="#ch2">
+        <span class="toc-label">第二章　依存の壁</span>
+        <span class="toc-dots"></span>
+        <span class="toc-theme">ツールに乗っているだけ</span>
+      </a>
+    </li>
+    <li>
+      <a href="#ch3">
+        <span class="toc-label">第三章　暴走の壁</span>
+        <span class="toc-dots"></span>
+        <span class="toc-theme">エージェントが制御できない</span>
+      </a>
+    </li>
+    <li>
+      <a href="#ch4">
+        <span class="toc-label">第四章　無知の壁</span>
+        <span class="toc-dots"></span>
+        <span class="toc-theme">エージェントが賢くない</span>
+      </a>
+    </li>
+    <li>
+      <a href="#ch5">
+        <span class="toc-label">第五章　コストの壁</span>
+        <span class="toc-dots"></span>
+        <span class="toc-theme">請求書が家賃の3倍だった</span>
+      </a>
+    </li>
+    <li>
+      <a href="#ch6">
+        <span class="toc-label">第六章　孤独の壁</span>
+        <span class="toc-dots"></span>
+        <span class="toc-theme">誰にも知られていない</span>
+      </a>
+    </li>
+    <li class="toc-special">
+      <a href="#climax">
+        <span class="toc-label">クライマックス　全ての壁が、同時に来た</span>
+        <span class="toc-dots"></span>
+        <span class="toc-theme">72時間</span>
+      </a>
+    </li>
+    <li class="toc-special">
+      <a href="#epilogue">
+        <span class="toc-label">エピローグ　拡張された自分</span>
+        <span class="toc-dots"></span>
+        <span class="toc-theme">1年後</span>
+      </a>
+    </li>
+  </ul>
+  <div class="page-num">— ii —</div>
+</div>
+
+<!-- プロローグ -->
+<div class="page" id="prologue">
+  <div class="section-label">Prologue</div>
+  <div class="section-title">プロローグ</div>
+  <div class="section-sub">退職届</div>
+  <hr class="hr">
+
+  <p>2026年5月の金曜日、午後11時。</p>
+
+  <p>増田春斗（27歳）は、オフィスの蛍光灯の下で自分のディスプレイを見つめていた。隣の席の先輩が笑いながら言った。</p>
+
+  <p>「見ろよ、これ。AIに頼んだら春斗の3日分の作業、一晩で終わったわ」</p>
+
+  <p>ディスプレイの中には、春斗が先週から取り組んでいた業務システムの改修仕様書とほぼ同じものが映っていた。構成も、変数名も、コメントの粒度まで。違いは、それが一晩で生成されたという事実だけだった。</p>
+
+  <p>先輩は悪意がなかった。ただ「すごい時代だ」と笑っていた。</p>
+
+  <p>春斗にはそれが「お前の5年間に価値はなかった」と聞こえた。</p>
+
+  <div class="hr-dot">・ ・ ・</div>
+
+  <p>翌朝、退職届を出した。</p>
+
+  <p>机を片付けて、ノートPCを1台だけ持って出た。エレベーターが閉まる瞬間、後輩が「春斗さん、どこ行くんですか」と聞いた。</p>
+
+  <p>「作りに行く」</p>
+
+  <p>何を、とは言えなかった。まだ何も、なかった。</p>
+
+  <div class="page-num">— 1 —</div>
+</div>
+
+<!-- 第一章 -->
+<div class="page" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">第 一 章</div>
+    <div class="chapter-title">虚無の壁</div>
+    <div class="chapter-theme">何もできない</div>
+  </div>
+
+  <div class="scene-title">最初の1週間</div>
+
+  <p>最初の1週間は、何もできなかった。</p>
+
+  <p>チュートリアルはやった。Pythonも書けた。ChatGPTも使える。Claude Codeも触ったことがある。しかし「何かを作ろう」とした瞬間、手が止まった。アイデアを思いつく→実装しようとする→どこから始めればいいかわからない→調べる→調べすぎる→疲れる→何も作れていない。この繰り返し。</p>
+
+  <p>部屋の壁に、春斗は付箋を貼った。</p>
+
+  <p>「AIを使いこなしている人間と、AIに使われている人間の差は何か」</p>
+
+  <p>3日考えた。答えは出なかった。代わりに、別の問いが生まれた。</p>
+
+  <p>「自分はAIの仕組みを、本当に理解しているか」</p>
+
+  <p>——していなかった。</p>
+
+  <div class="scene-title">修行：仕組みを手で作る</div>
+
+  <p>春斗は遠回りを選んだ。</p>
+
+  <p><span class="tool">nn-zero-to-hero</span>（Andrej KarpathyのYouTubeコース）を開いた。ニューラルネットワークをゼロから手で実装する。微分を自分で書く。バックプロパゲーションを自分で計算する。最初の数日、何度も「こんな遠回りをしている場合じゃない」という声が頭に浮かんだ。しかし春斗は続けた。</p>
+
+  <p>2週間後、自分で実装したmicrograd（小さな自動微分エンジン）が初めて動いた瞬間、何かが腑に落ちた。「これは魔法じゃない。巨大なif文の積み重ねだ」。</p>
+
+  <p>次に <span class="tool">ai-engineering-from-scratch</span>（Anthropicが公開した435レッスンのカリキュラム）を開いた。LLMの評価、RAGの設計、エージェントの構築——全て体系立てて順番に積み上げた。焦らなかった。土台が弱い建物が崩れるのを、5年間で十分見てきた。</p>
+
+  <p><span class="tool">build-your-own-x</span> が春斗の哲学になった。「作って初めて理解できる」。Gitを自作する。Dockerを自作する。HTTPサーバーを自作する。全部は作れなくても、「原理を知っている」と「原理を知らない」の差が、応用の幅を決める。</p>
+
+  <p>最後に <span class="tool">learn-claude-code</span> を手にした。Claude Codeのエージェントハーネスを0から実装して学ぶリポジトリだ。Claudeがどうやって「考えて」「道具を使って」「結果を返す」かを、コードで追いかけた。</p>
+
+  <p>1ヶ月後、春斗は壁の付箋を剥がした。</p>
+
+  <div class="mastery">
+    <div class="mastery-label">体 得</div>
+    <p>「仕組みを理解した人間が設計し、理解していない人間が消費する。自分は設計する側になる」</p>
+  </div>
+
+  <div class="page-num">— 2 —</div>
+</div>
+
+<!-- 第二章 -->
+<div class="page" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">第 二 章</div>
+    <div class="chapter-title">依存の壁</div>
+    <div class="chapter-theme">ツールに乗っているだけ</div>
+  </div>
+
+  <div class="scene-title">全部やり直した</div>
+
+  <p>AIコーディングツールを使い始めると、生産性が爆発した。</p>
+
+  <p>Claude Codeが書く。春斗がレビューする。修正する。次のタスクを渡す。1日で数百行のコードが完成した。「これは最強だ」と思った。</p>
+
+  <p>3週間後、全部やり直した。</p>
+
+  <p>レビューしているつもりで、実は理解していなかった。AIが「それっぽく」書くコードを、「動くからいいだろう」と通し続けた。気づいたときにはシステム全体に矛盾が積み重なり、どこから崩れているかもわからない状態になっていた。AIが間違えたとき、自分では直せなかった。</p>
+
+  <p>「ツールに乗っているだけだった」と春斗は書いた。ノートに。久しぶりに紙で。</p>
+
+  <div class="scene-title">修行：設計する側に立つ</div>
+
+  <p>春斗はまず「哲学」から学んだ。</p>
+
+  <p><span class="tool">karpathy-skills</span> を読んだ。KarpathyがAIエージェントのためにどうCLAUDE.mdを書くか、その設計原則が書かれていた。次に <span class="tool">andrej-karpathy-skills</span>——たった1枚のCLAUDE.mdファイルがClaude Codeの挙動を根本から変えるという実証例。「AIへの指示は、コードと同じくらい精密に書くべきだ」。</p>
+
+  <p><span class="tool">superpowers</span> の7フェーズAIコーディングワークフローが、春斗の毎朝のルーティンになった。Phase 1: 問題の定義。Phase 2: 調査。Phase 3: 設計……。無計画に「作り始める」のではなく、思考の順序を構造化する。</p>
+
+  <p>ツールのエコシステムを体系的に把握した。<span class="tool">claude-plugins-official</span>（Anthropic公式プラグインディレクトリ）で何が使えるか把握し、<span class="tool">knowledge-work-plugins</span> でナレッジワーク系の作業を自動化。<span class="tool">awesome-claude-code</span> でコミュニティのスキル・フック集を定期購読した。</p>
+
+  <p>一方で春斗は「依存するな」とも学んだ。<span class="tool">openai-codex</span>（OpenAIのターミナルエージェント）と <span class="tool">gemini-cli</span>（Google Geminiのターミナルエージェント）を手元に置き、タスクの性質によって使い分けた。APIコストが厳しいフェーズには <span class="tool">free-claude-code</span> が保険になった。道具は複数持て。1つに頼り切るな。</p>
+
+  <p>開発環境も整えた。<span class="tool">waveterm</span>——AI統合・SSH持続接続・ファイルエディタが一体になったターミナル。「これ以外に戻れない」と感じた最初のツールだった。Macには <span class="tool">cmux</span> を追加し、複数のAIエージェントを縦タブで並走させた。エディタ統合には <span class="tool">oh-my-pi</span> のLSP＋デバッガを仕込み、補完とデバッグをターミナルから完結させた。</p>
+
+  <p>コードベースが育つにつれ <span class="tool">codegraph</span>（Replit製コードベース知識グラフMCPサーバー）を導入した。AIエージェントがリポジトリ全体の構造を「知った上で」コードを書くようになる。ブラウザのデバッグには <span class="tool">chrome-devtools-mcp</span>。MCPサーバーのカタログは <span class="tool">awesome-mcp-servers</span> で把握し、<span class="tool">5ire</span> をMCP対応IDEとして統合した。</p>
+
+  <p>2ヶ月目の終わり、春斗は改めてコードを書き直した。今度はAIが出力するたびに「なぜこう書いたのか」を問い、理解できないものは通さなかった。速度は落ちた。しかし今度は崩れなかった。</p>
+
+  <div class="mastery">
+    <div class="mastery-label">体 得</div>
+    <p>「AIを使うのではなく、AIに仕事を渡す設計をする。自分がレビュアーになったとき、初めてツールが道具になる」</p>
+  </div>
+
+  <div class="page-num">— 3 —</div>
+</div>
+
+<!-- 第三章 -->
+<div class="page" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">第 三 章</div>
+    <div class="chapter-title">暴走の壁</div>
+    <div class="chapter-theme">エージェントが制御できない</div>
+  </div>
+
+  <div class="scene-title">エラーログが3000行になっていた</div>
+
+  <p>最初のプロトタイプが動き始めた。「情報収集→分析→レポート生成」を自動でやるエージェント。春斗は意気揚々と複数のエージェントを繋いだ。</p>
+
+  <p>Aがデータを取ってくる。BがAの出力を分析する。CがBの結果でレポートを書く。</p>
+
+  <p>最初の1時間は動いた。</p>
+
+  <p>2時間後、AがBの出力を参照してループした。Bがエラーを返し続けた。Cは何も受け取っていないのに「完了した」と報告した。エラーログが3000行になっていた。</p>
+
+  <p>春斗は全てをCtrl+Cで止めた。</p>
+
+  <p>「エージェントを作った」つもりが「バグを育てていた」だけだった。何が起きているか、全くわからなかった。デバッグに8時間かけて、原因が「状態管理の欠如」だと気づいた。各エージェントが「今何をしているか」「前のエージェントが何を渡したか」を誰も管理していなかった。</p>
+
+  <p>1週間後、また同じ崩れ方をした。</p>
+
+  <div class="scene-title">修行：設計の言葉を覚える</div>
+
+  <p>春斗はエージェントフレームワークを根本から学ぶことにした。</p>
+
+  <p><span class="tool">LangGraph</span> から始めた。グラフベースのエージェントオーケストレーション——各ステップをノードに、依存関係をエッジに。状態は一元管理される。「エージェントの動きを図で書ける」という感覚が、初めて生まれた。</p>
+
+  <p><span class="tool">openai-agents</span> と <span class="tool">mastra</span>（TypeScript製エージェントフレームワーク）で実装の引き出しを増やした。言語が違えば設計思想も違う。TypeScriptで書くと「型」が強制的に状態を定義させる。Pythonで書くときも、その感覚を持ち込んだ。</p>
+
+  <p><span class="tool">astrbot</span> でマルチプラットフォーム展開を学んだ。SlackでもLINEでもWebでも同じエージェントが動く設計。インターフェースとロジックを分離することの意味が、ここで腑に落ちた。</p>
+
+  <p>ローカルLLMでのツール呼び出しには <span class="tool">forge</span> を使った。<span class="tool">pi</span>（CLI・統一API・TUI・Slack統合ツールキット）でエンドツーエンドの動作確認を繰り返した。</p>
+
+  <p><span class="tool">agent-browser</span>（Rust製、AIエージェント向けブラウザ自動化）を組み込んだとき、春斗のエージェントが初めて「自分でブラウザを開いて情報を調べてくる」ようになった。画面の向こうで何かが動いている感覚。</p>
+
+  <p><span class="tool">agency-agents</span>——144以上の専門エージェントのコレクション——を見たとき、春斗は「分業」の設計パターンを学んだ。1つの万能エージェントより、役割が明確な専門エージェントの集合のほうが堅牢だ。これはソフトウェア設計の原則と同じだった。</p>
+
+  <p>全体を <span class="tool">haystack</span> のパイプラインに統合した。エラーハンドリング、リトライ、ログ——本番運用を想定した設計が全部含まれている。</p>
+
+  <p>3ヶ月目。エージェントが初めて、止まらずに最後まで動き切った。春斗はターミナルのログを眺めながら、静かに息を吐いた。</p>
+
+  <div class="mastery">
+    <div class="mastery-label">体 得</div>
+    <p>「エージェントは『頭が良い』のではなく、『責任範囲が明確』なときだけ動く。設計が制御を生む」</p>
+  </div>
+
+  <div class="page-num">— 4 —</div>
+</div>
+
+<!-- 第四章 -->
+<div class="page" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">第 四 章</div>
+    <div class="chapter-title">無知の壁</div>
+    <div class="chapter-theme">エージェントが賢くない</div>
+  </div>
+
+  <div class="scene-title">頭はいいが、何も知らない</div>
+
+  <p>エージェントは動く。安定している。しかし——</p>
+
+  <p>「昨日話したことを覚えていない」「専門的な質問をすると、もっともらしい嘘をつく」「文脈が長くなると、最初の指示を忘れる」</p>
+
+  <p>ユーザーを想定したテストで、致命的な問題が次々と出てきた。エージェントは毎回ゼロスタートだった。ドメイン知識がない。蓄積がない。「頭はいいが、何も知らない新人」に、重要な仕事は任せられない。</p>
+
+  <p>春斗は考えた。人間が賢くなる仕組みは何か。経験の蓄積。良質な情報への接触。文脈の記憶。——エージェントに、これを与えなければならない。</p>
+
+  <div class="scene-title">修行：知識を作る</div>
+
+  <p>まず「入力の質」を変えた。<span class="tool">Crawlee</span> と <span class="tool">Crawlee-Python</span> でWebスクレイピングパイプラインを構築した。情報を手動でコピーする時代は終わった。収集したPDF・Word・PowerPoint・HTMLは <span class="tool">markitdown</span>（Microsoft製）が全てMarkdownに変換してLLMに渡す。「前処理の標準化」が思った以上に重要だった。フォーマットが統一されると、モデルの出力が安定した。</p>
+
+  <p>世界の動きを追うために <span class="tool">worldmonitor</span>（500以上のフィードを統合する地政学インテリジェンスダッシュボード）を入れた。インフラ系の実践知識は <span class="tool">the-book-of-secret-knowledge</span>——DevOps・セキュリティの実践チートシート集——が毎週更新されるリファレンスになった。</p>
+
+  <p>自宅環境も「センサー化」した。ESP32（8ドルのマイコン）に <span class="tool">RuView</span> を仕込み、WiFiのCSI信号だけで人の動きを検知させた。カメラ不要。電波だけで生体検知ができる。玄関のIPカメラには <span class="tool">frigate</span> を繋ぎ、ローカルでリアルタイム物体検知を走らせた。クラウドに送らない、ローカルで完結するセンシング。</p>
+
+  <p>次に「記憶の構造」を作った。<span class="tool">khoj</span> でパーソナルAIセカンドブレインを構築した。蓄積したドキュメントを自然言語で検索できる自分だけのRAGシステム。<span class="tool">LightRAG</span> と <span class="tool">GraphRAG</span>（Microsoft製）でエンティティ間の関係をグラフ構造で保持した。「AはBと関係している」「BはCの一部だ」——この関係性がRAGの回答品質を劇的に変えた。</p>
+
+  <p><span class="tool">RAG_Techniques</span> で最新の実装パターンを次々と試し、<span class="tool">local-deep-research</span> でインターネット不要のローカル深掘り調査を可能にした。新しいドキュメントを投げ込むと <span class="tool">understand-anything</span> が自動でインタラクティブな知識グラフを生成する。</p>
+
+  <p>スキルの幅も広げた。<span class="tool">dotnet-skills</span>（Microsoft .NETチームのAIスキル集）でエンタープライズ系の実装パターンを学び、<span class="tool">cybersecurity-skills</span>（754のサイバーセキュリティスキル）をエージェントに組み込んで脆弱性チェックを自動化した。デザインの実装には <span class="tool">stitch-skills</span>（デザインをコードに変換するGoogleのAIスキル）を使った。</p>
+
+  <p>調査の品質は <span class="tool">academic-research-skills</span>（7エージェント査読パイプライン）と <span class="tool">autoresearch</span> で担保した。論文1本を書くような精度で、マーケットリサーチができるようになった。</p>
+
+  <p>4ヶ月目の後半。エージェントが初めて「文脈を持った回答」を返した。先週の会話を覚えていた。専門的な質問に、専門的な答えが返ってきた。</p>
+
+  <p>春斗は思わず声を出した。一人で。部屋に誰もいないのに。</p>
+
+  <div class="mastery">
+    <div class="mastery-label">体 得</div>
+    <p>「エージェントの賢さは、与えた知識の質で決まる。知識を設計することが、エンジニアリングだ」</p>
+  </div>
+
+  <div class="page-num">— 5 —</div>
+</div>
+
+<!-- 第五章 -->
+<div class="page" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">第 五 章</div>
+    <div class="chapter-title">コストの壁</div>
+    <div class="chapter-theme">請求書が家賃の3倍だった</div>
+  </div>
+
+  <div class="scene-title">穴の開いたバケツ</div>
+
+  <p>ベータユーザーが50人を超えたとき、月末の請求書を見て手が止まった。</p>
+
+  <p>API費用が家賃の3倍だった。</p>
+
+  <p>「スケールするほど赤字が増える」。穴の開いたバケツに水を注ぐ構造に気づいた。ユーザーが増えることが、破産に近づくことを意味していた。</p>
+
+  <p>Slackのコミュニティで相談した。返ってきた返信は「可観測性を入れてから話して」だった。最初は意味がわからなかった。</p>
+
+  <div class="scene-title">修行：コストを設計する</div>
+
+  <p><span class="tool">Langfuse</span> を入れた。LLMアプリのトレーシングと費用可視化。どのリクエストが何トークン使って、何円かかっているかが、初めて見えた。衝撃だった。コストの80%が、20%の「特定パターンのリクエスト」から来ていた。まず可視化しなければ、何も最適化できない。</p>
+
+  <p><span class="tool">OpenLit</span> でLLMの可観測性をさらに強化した。レスポンスタイム、エラー率、コスト推移——全てダッシュボードに集まった。</p>
+
+  <p><span class="tool">LiteLLM</span> でOpenAI・Anthropic・Geminiを統一APIに集約した。同じコードで、どのプロバイダーにもリクエストできる。コストと品質のトレードオフを、タスクごとに自動ルーティングした。軽いタスクは安いモデル。重要なタスクだけ高性能モデル。</p>
+
+  <p>長いプロンプトは <span class="tool">LLMLingua</span>（Microsoft製プロンプト圧縮ライブラリ）で圧縮した。小さなLMが「LLMが回答に必要な情報だけ」を残して不要なトークンを削除する。典型的に2〜5倍の圧縮。RAGで引っ張ってきたコンテキストが長すぎる問題が、ここで解決した。</p>
+
+  <p>繰り返し来る似た質問には <span class="tool">GPTCache</span> を使った。セマンティックキャッシュ——「同じ意味の質問」を検知して、APIを呼ばずにキャッシュから返す。導入後、問い合わせの71%がキャッシュヒットするようになった。<span class="tool">provider-features</span> でAnthropicとOpenAIの公式キャッシュ機能も使い倒した。</p>
+
+  <p>実験の記録は <span class="tool">MLflow</span> に全部残した。どのプロンプト・どのモデル・どのパラメータが最善か。再現できない実験は技術的負債だという確信が、ここで完成した。</p>
+
+  <p>副業として始めた市場予測プロダクトが、この時期に軌道に乗り始めた。<span class="tool">Kronos</span>（金融市場言語向けFoundation Model）でニュース・決算テキストを解析。<span class="tool">MiroFish</span>（汎用群知能予測エンジン）でアンサンブル予測を組んだ。<span class="tool">fincept-terminal</span>（OSSのBloomberg端末代替）でデータを可視化し、毎朝 <span class="tool">daily-stock-analysis</span> が自動でTelegramにレポートを送る。「予測が当たった」と連絡してくるユーザーが現れた。初めて、見知らぬ人から感謝された。</p>
+
+  <p>5ヶ月目の終わり。API費用が元の水準から60%以上削減されていた。</p>
+
+  <div class="mastery">
+    <div class="mastery-label">体 得</div>
+    <p>「コストを制した者だけがスケールできる。最適化は可観測性から始まる」</p>
+  </div>
+
+  <div class="page-num">— 6 —</div>
+</div>
+
+<!-- 第六章 -->
+<div class="page" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">第 六 章</div>
+    <div class="chapter-title">孤独の壁</div>
+    <div class="chapter-theme">誰にも知られていない</div>
+  </div>
+
+  <div class="scene-title">良いものを作れば広まる、は嘘だった</div>
+
+  <p>プロダクトは完成した。</p>
+
+  <p>動く。安定している。安い。賢い。</p>
+
+  <p>——しかし、誰にも知られていない。</p>
+
+  <p>ベータユーザーは知人の紹介で集めた50人。それ以上増えない。「良いものを作れば広まる」という幻想が、ここで砕けた。</p>
+
+  <p>TwitterでDMを送った。反応なし。ブログを書いた。誰も読まない。プロダクトのページを丁寧に作った。アクセスがゼロだった。</p>
+
+  <p>届けることは、また別の技術だった。</p>
+
+  <div class="scene-title">修行：届けることを自動化する</div>
+
+  <p><span class="tool">cli-anything</span> でコンテンツ生成を自動化した。記事・マーケットレポート・技術解説——AIが毎日生成する。春斗はレビューと公開ボタンだけ押す。</p>
+
+  <p><span class="tool">vimax</span> で解説動画を量産した。テキストを渡すと動画になる。毎週1本のYouTubeが、毎日1本になった。<span class="tool">presenton</span> でスライドを10分で仕上げ、<span class="tool">notebooklm-py</span> が議事録と調査結果を自動でポッドキャスト形式に変換した。ビジュアルは <span class="tool">ComfyUI</span>（ノードベース画像生成）と <span class="tool">jaaz</span>（AI画像編集）で作り、デザインは <span class="tool">stitch-skills</span> がそのままコードに落とした。</p>
+
+  <p>マーケティング施策は <span class="tool">marketingskills</span>（50以上のマーケティングAIエージェント）に委任した。SEO分析、SNSコピー、メールシーケンス——全てエージェントが回す。</p>
+
+  <p>インフラを整えた。顧客との連絡は <span class="tool">openwa</span>（自己ホスト型WhatsApp APIゲートウェイ）で一元管理。ERPは <span class="tool">erpnext</span>（OSSのSAP代替、会計・在庫・製造統合）を入れた。プロキシ管理は <span class="tool">s-ui</span>（Sing-Box WebUIパネル）で。サービスのバックエンドは <span class="tool">hermes-agent</span>・<span class="tool">openhuman</span>・<span class="tool">multica</span> で構成し、<span class="tool">sub2api</span> でサブスクリプションをAPI提供に変換、<span class="tool">rtk</span> がリアルタイム処理を担った。</p>
+
+  <p>チームが2人になった日、運営の仕組みを整えた。会議は <span class="tool">Meetily</span> が自動で文字起こし・要約。ドキュメントは <span class="tool">Docmost</span> に集め、社内Wikiは <span class="tool">AppFlowy</span>（OSSのNotion代替）で管理。月々のサービス費用は <span class="tool">Wallos</span> でサブスクリプション一覧を可視化した。</p>
+
+  <p>6ヶ月目の後半、コンテンツが積み重なってきた頃。ある日、見知らぬアカウントからフォローの通知が来た。翌日また来た。翌週には100件。エージェントが自律的に書いた記事が、バズっていた。</p>
+
+  <p>夜、<span class="tool">streambert</span> でYouTubeとTwitchを横断しながら技術動画を流した。疲れたときは <span class="tool">stremio-web</span> で映画を観た。初めて、「休む時間」が作れた。</p>
+
+  <div class="mastery">
+    <div class="mastery-label">体 得</div>
+    <p>「届けることもエンジニアリングだ。発信の仕組みを作った者が、世界と繋がれる」</p>
+  </div>
+
+  <div class="page-num">— 7 —</div>
+</div>
+
+<!-- クライマックス -->
+<div class="page" id="climax">
+  <div class="section-label">Climax</div>
+  <div class="section-title">全ての壁が、<br>同時に来た</div>
+  <div class="section-sub">72時間</div>
+  <hr class="hr">
+
+  <p>7ヶ月目の木曜日、午前10時。</p>
+
+  <p>Twitterのタイムラインに流れた。「〇〇社、同コンセプトの無料ツールを本日発表」——大手テックプラットフォームだった。</p>
+
+  <p>30分後、春斗のサービスのDAUが半分になった。</p>
+
+  <p>1時間後、サーバーに負荷が集中した。コストが跳ね上がった。問い合わせが殺到した。「無料になったから解約します」のメールが連続した。</p>
+
+  <div class="climax-quote">全ての壁が、同時に来た。</div>
+
+  <p>春斗はターミナルを開いた。手が動いた。考えるより先に。</p>
+
+  <p><span class="tool">Langfuse</span> でコストの跳ね上がりを確認し、<span class="tool">LiteLLM</span> のルーティングルールを即座に切り替えた。過負荷のエンドポイントを <span class="tool">OpenLit</span> で特定し、<span class="tool">LangGraph</span> のフローを修正してボトルネックを迂回した。<span class="tool">GPTCache</span> のキャッシュ期間を延ばし、<span class="tool">LLMLingua</span> の圧縮率を上げた。</p>
+
+  <p>殺到する問い合わせは <span class="tool">openwa</span> を通じてエージェントが一次対応した。<span class="tool">astrbot</span> 経由でSlackとLINEにも同時展開。<span class="tool">agency-agents</span> の専門エージェントが技術的な質問を自律で捌いた。</p>
+
+  <p>同時に、差別化の記事を <span class="tool">cli-anything</span> で生成し始めた。「大手との違い」を <span class="tool">presenton</span> でスライドにまとめ、<span class="tool">vimax</span> で動画に変換し、<span class="tool">marketingskills</span> のエージェントがSNSに展開した。<span class="tool">academic-research-skills</span> のパイプラインが競合分析を走らせ、<span class="tool">autoresearch</span> が差別化ポイントを体系化した。</p>
+
+  <p>72時間、春斗はほぼ眠らなかった。しかし一人ではなかった。</p>
+
+  <p>79のリポジトリが動いていた。</p>
+
+  <div class="hr-dot">・ ・ ・</div>
+
+  <p>72時間後、DAUは底を打ち、上がり始めた。「大手にはない〇〇機能がある」という口コミが広がっていた。コストは安定していた。問い合わせはエージェントが捌き続けていた。</p>
+
+  <p>春斗は椅子に深く座り、ターミナルのログを眺めた。</p>
+
+  <p>緑の文字が、流れ続けていた。</p>
+
+  <div class="page-num">— 8 —</div>
+</div>
+
+<!-- エピローグ -->
+<div class="page" id="epilogue">
+  <div class="section-label">Epilogue</div>
+  <div class="section-title">拡張された自分</div>
+  <div class="section-sub">退職から1年後</div>
+  <hr class="hr">
+
+  <p>退職から1年後の5月。春斗の手元には、ノートPCと79のリポジトリがある。</p>
+
+  <div class="mastery-list">
+    <div class="mastery-list-item">
+      <span class="mastery-list-wall">壁1</span>
+      <span>仕組みの理解は、あらゆる判断の土台になった</span>
+    </div>
+    <div class="mastery-list-item">
+      <span class="mastery-list-wall">壁2</span>
+      <span>「設計する側に立つ」哲学が、AIとの関係を変えた</span>
+    </div>
+    <div class="mastery-list-item">
+      <span class="mastery-list-wall">壁3</span>
+      <span>「状態管理と役割分担」の体得が、エージェントに秩序を与えた</span>
+    </div>
+    <div class="mastery-list-item">
+      <span class="mastery-list-wall">壁4</span>
+      <span>「知識の設計」が、エージェントに記憶と賢さを与えた</span>
+    </div>
+    <div class="mastery-list-item">
+      <span class="mastery-list-wall">壁5</span>
+      <span>「コスト設計」の体得が、スケールへの道を開いた</span>
+    </div>
+    <div class="mastery-list-item">
+      <span class="mastery-list-wall">壁6</span>
+      <span>「届ける技術」の体得が、世界との接続を作った</span>
+    </div>
+  </div>
+
+  <p>79のリポジトリは、ツールのリストではない。6つの壁を越えるたびに積み上がった、体得の記録だ。</p>
+
+  <div class="hr-dot">・ ・ ・</div>
+
+  <p>夜、春斗は次の壁のことを考えていた。必ずある、と思っていた。むしろ、楽しみにしていた。</p>
+
+  <p>壁があるということは、まだ成長できるということだ。</p>
+
+  <p>彼が退職届を書いたあの夜から1年。増田春斗が作ったのは「プロダクト」ではなかった。</p>
+
+  <p style="text-align:center; font-size:1.1rem; font-weight:600; margin-top:32px; letter-spacing:.12em;">拡張された自分自身だった。</p>
+
+  <div class="page-num">— 9 —</div>
+</div>
+
+<!-- 奥付 -->
+<div class="page" id="colophon">
+  <div class="colophon">
+    <div class="big-title">七度転んで、<br>ひとつのエンジンができた</div>
+    <hr class="hr">
+    <div class="repo-count">79</div>
+    <div class="repo-label">repositories</div>
+    <br>
+    <div class="meta">
+      壁1 · 学習 &nbsp;&nbsp;4 repos<br>
+      壁2 · 開発環境 &nbsp;&nbsp;16 repos<br>
+      壁3 · エージェント &nbsp;&nbsp;9 repos<br>
+      壁4 · 知識 &nbsp;&nbsp;18 repos<br>
+      壁5 · コスト &nbsp;&nbsp;11 repos<br>
+      壁6 · 発信 &nbsp;&nbsp;21 repos
+    </div>
+    <hr class="hr">
+    <div class="meta">
+      GitHub Trending 2026/05<br>
+      second_brain / github_trending_2026_05
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
