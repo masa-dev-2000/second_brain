@@ -25,6 +25,7 @@ Claude Code・Cursor・Copilot等のAIコーディングツールを強化する
 | — | [11_awesome-claude-code.md](./11_awesome-claude-code.md) | hesreallyhim/awesome-claude-code | 44,562 | Claude Code Skills・Hooks・プラグインのawesome list |
 | — | [12_knowledge-work-plugins.md](./12_knowledge-work-plugins.md) | anthropics/knowledge-work-plugins | 14,186 | Anthropic公式 Claude Cowork ナレッジワーカー向けプラグイン集 |
 | — | [13_cybersecurity-skills.md](./13_cybersecurity-skills.md) | mukul975/Anthropic-Cybersecurity-Skills | 8,465 | AIエージェント向けサイバーセキュリティスキル754個 |
+| — | [14_claude-dynamic-workflows.md](./14_claude-dynamic-workflows.md) | Anthropic（公式機能） | — | 最大1,000サブエージェント並列・JSスクリプト自動生成ワークフロー |
 
 ---
 
