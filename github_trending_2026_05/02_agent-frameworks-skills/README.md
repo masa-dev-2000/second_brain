@@ -26,6 +26,7 @@ AIエージェントの設計思想・ワークフロー・フレームワーク
 | — | [12_haystack.md](./12_haystack.md) | deepset-ai/haystack | — | LLMアプリ・RAGパイプライン構築フレームワーク |
 | — | [13_andrej-karpathy-skills.md](./13_andrej-karpathy-skills.md) | multica-ai/andrej-karpathy-skills | 152,551 | Claude Code挙動を改善する単一CLAUDE.mdファイル |
 | — | [14_pi.md](./14_pi.md) | earendil-works/pi | 54,044 | AIエージェントツールキット（CLI・統一API・TUI・Slack） |
+| — | [15_dify.md](./15_dify.md) | langgenius/dify | 143,000 | ノーコード〜ローコードでLLMアプリ・RAG・エージェントを構築するフルスタックプラットフォーム |
 
 ---
 
