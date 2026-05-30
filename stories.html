@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIツールで課題を解決した6つのストーリー</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3250;
+    --text: #e8eaf0;
+    --text-sub: #8b92b0;
+    --text-dim: #555e7a;
+    --dify: #6c63ff;
+    --dify-light: #a09bff;
+    --claude: #d4a843;
+    --claude-light: #f0c96a;
+    --accent: #3dd68c;
+    --danger: #ff6b6b;
+    --warn: #ffa94d;
+    --code-bg: #0d1117;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  /* ── Layout ── */
+
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-header {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .sidebar-main {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .sidebar-nav {
+    padding: 16px 0;
+    flex: 1;
+  }
+
+  .nav-section {
+    padding: 8px 24px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .nav-section.dify { color: var(--dify-light); }
+  .nav-section.claude { color: var(--claude-light); }
+
+  .nav-item {
+    display: block;
+    padding: 10px 24px;
+    color: var(--text-sub);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.4;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .nav-item:hover {
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  .nav-item.dify:hover,
+  .nav-item.dify.active {
+    border-left-color: var(--dify);
+    color: var(--dify-light);
+    background: rgba(108,99,255,0.08);
+  }
+
+  .nav-item.claude:hover,
+  .nav-item.claude.active {
+    border-left-color: var(--claude);
+    color: var(--claude-light);
+    background: rgba(212,168,67,0.08);
+  }
+
+  .nav-num {
+    display: inline-block;
+    width: 20px;
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+
+  .nav-sub {
+    display: block;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .sidebar-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .home-link {
+    display: block;
+    font-size: 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 6px 0;
+    transition: color 0.15s;
+  }
+
+  .home-link:hover { color: var(--text-sub); }
+
+  /* ── Main ── */
+
+  .main {
+    min-width: 0;
+    padding: 0;
+  }
+
+  /* ── Hero ── */
+
+  .hero {
+    padding: 72px 64px 56px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
+  }
+
+  .hero-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--text-sub);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .tag.dify {
+    background: rgba(108,99,255,0.15);
+    color: var(--dify-light);
+    border: 1px solid rgba(108,99,255,0.3);
+  }
+
+  .tag.claude {
+    background: rgba(212,168,67,0.15);
+    color: var(--claude-light);
+    border: 1px solid rgba(212,168,67,0.3);
+  }
+
+  /* ── Story ── */
+
+  .story {
+    padding: 64px 64px 80px;
+    border-bottom: 1px solid var(--border);
+    max-width: 860px;
+  }
+
+  .story-header {
+    margin-bottom: 48px;
+  }
+
+  .story-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 14px 4px 8px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .story-badge.dify {
+    background: rgba(108,99,255,0.15);
+    color: var(--dify-light);
+    border: 1px solid rgba(108,99,255,0.25);
+  }
+
+  .story-badge.claude {
+    background: rgba(212,168,67,0.15);
+    color: var(--claude-light);
+    border: 1px solid rgba(212,168,67,0.25);
+  }
+
+  .story-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .story-badge.dify .dot { background: var(--dify); }
+  .story-badge.claude .dot { background: var(--claude); }
+
+  .story-num {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .story h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .story-subtitle {
+    font-size: 14px;
+    color: var(--text-sub);
+    font-style: italic;
+  }
+
+  /* ── Character card ── */
+
+  .character-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 32px 0;
+  }
+
+  .character-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .character-icon.dify { background: rgba(108,99,255,0.2); }
+  .character-icon.claude { background: rgba(212,168,67,0.2); }
+
+  .character-info h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .character-info p {
+    font-size: 13px;
+    color: var(--text-sub);
+    line-height: 1.6;
+  }
+
+  /* ── Section heading ── */
+
+  .story h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 40px 0 16px;
+    padding-left: 16px;
+    border-left: 3px solid var(--border);
+    color: var(--text);
+  }
+
+  .story.dify-story h3 { border-left-color: var(--dify); }
+  .story.claude-story h3 { border-left-color: var(--claude); }
+
+  /* ── Prose ── */
+
+  .story p {
+    font-size: 15px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+
+  .story p.dim {
+    color: var(--text-sub);
+    font-size: 14px;
+  }
+
+  /* ── Code blocks ── */
+
+  .story pre, .story .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #b0c4de;
+  }
+
+  .code-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: -12px;
+    padding: 0 4px;
+  }
+
+  .story code {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 13px;
+    color: inherit;
+  }
+
+  /* ── Table ── */
+
+  .story .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .story table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .story th {
+    background: var(--surface);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--text-sub);
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .story td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .story tr:last-child td { border-bottom: none; }
+  .story tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  /* ── Callout ── */
+
+  .callout {
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 14px;
+    line-height: 1.8;
+    border-left: 3px solid;
+  }
+
+  .callout.info {
+    background: rgba(61,214,140,0.08);
+    border-left-color: var(--accent);
+    color: #9df0c8;
+  }
+
+  .callout.warn {
+    background: rgba(255,169,77,0.08);
+    border-left-color: var(--warn);
+    color: #ffd699;
+  }
+
+  .callout.tip {
+    background: rgba(108,99,255,0.08);
+    border-left-color: var(--dify);
+    color: var(--dify-light);
+  }
+
+  .callout.claude-tip {
+    background: rgba(212,168,67,0.08);
+    border-left-color: var(--claude);
+    color: var(--claude-light);
+  }
+
+  /* ── Result box ── */
+
+  .result-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 32px 0;
+  }
+
+  .result-box h4 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+
+  .result-item {
+    text-align: center;
+    padding: 16px;
+    background: var(--surface2);
+    border-radius: 8px;
+  }
+
+  .result-num {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .result-item.good .result-num { color: var(--accent); }
+  .result-item.warn .result-num { color: var(--warn); }
+  .result-item.dify .result-num { color: var(--dify-light); }
+  .result-item.claude .result-num { color: var(--claude-light); }
+
+  .result-label {
+    font-size: 12px;
+    color: var(--text-sub);
+  }
+
+  /* ── Feature summary ── */
+
+  .features-used {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 40px 0 0;
+  }
+
+  .features-used h4 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+
+  .feature-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .chip.dify {
+    background: rgba(108,99,255,0.15);
+    color: var(--dify-light);
+    border: 1px solid rgba(108,99,255,0.25);
+  }
+
+  .chip.claude {
+    background: rgba(212,168,67,0.15);
+    color: var(--claude-light);
+    border: 1px solid rgba(212,168,67,0.25);
+  }
+
+  /* ── Dialogue ── */
+
+  .dialogue {
+    margin: 24px 0;
+  }
+
+  .dialogue-line {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+  }
+
+  .dialogue-speaker {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+    min-width: 64px;
+    padding-top: 2px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .dialogue-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+    padding: 8px 14px;
+    background: var(--surface);
+    border-radius: 0 8px 8px 8px;
+    flex: 1;
+    border: 1px solid var(--border);
+  }
+
+  /* ── Divider ── */
+
+  .story-divider {
+    text-align: center;
+    margin: 40px 0;
+    color: var(--text-dim);
+    font-size: 18px;
+    letter-spacing: 0.3em;
+  }
+
+  /* ── Highlight quote ── */
+
+  .pull-quote {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.6;
+    text-align: center;
+    padding: 32px 40px;
+    margin: 32px 0;
+    color: var(--text);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pull-quote.dify { color: var(--dify-light); }
+  .pull-quote.claude { color: var(--claude-light); }
+
+  /* ── Mobile ── */
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: relative; height: auto; }
+    .story { padding: 40px 24px 60px; }
+    .hero { padding: 48px 24px 40px; }
+    .hero h1 { font-size: 26px; }
+    .story h2 { font-size: 22px; }
+    .result-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── Scroll indicator ── */
+
+  .scroll-top {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 40px;
+    height: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--text-sub);
+    text-decoration: none;
+    transition: all 0.15s;
+    z-index: 100;
+  }
+
+  .scroll-top:hover {
+    background: var(--surface2);
+    color: var(--text);
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Story Collection</div>
+      <div class="sidebar-main">AIで課題を<br>解決した6つの話</div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section dify">Dify編</div>
+      <a class="nav-item dify" href="#s1">
+        <span class="nav-num">01</span> 田中麻衣
+        <span class="nav-sub">社内Q&Aボット構築</span>
+      </a>
+      <a class="nav-item dify" href="#s2">
+        <span class="nav-num">02</span> 井上健太
+        <span class="nav-sub">営業提案書の自動生成</span>
+      </a>
+      <a class="nav-item dify" href="#s3">
+        <span class="nav-num">03</span> 橘沙織
+        <span class="nav-sub">競合監視レポート</span>
+      </a>
+      <a class="nav-item dify" href="#s4">
+        <span class="nav-num">04</span> 小坂雄太
+        <span class="nav-sub">CS自動対応フロー</span>
+      </a>
+      <div class="nav-section claude" style="margin-top:12px">Claude Code編</div>
+      <a class="nav-item claude" href="#s5">
+        <span class="nav-num">05</span> 山下拓也
+        <span class="nav-sub">3年分の技術的負債</span>
+      </a>
+      <a class="nav-item claude" href="#s6">
+        <span class="nav-num">06</span> 田村悟
+        <span class="nav-sub">コードを知らない経営者</span>
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <a class="home-link" href="index.html">← メインブックに戻る</a>
+      <a class="home-link" href="https://github.com/masa-dev-2000/second_brain">GitHub</a>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-label">Case Stories</div>
+      <h1>AIツールで<br>課題を解決した<br>6つのストーリー</h1>
+      <p class="hero-desc">
+        ノーコードのDifyと、コードを書くClaude Code。<br>
+        それぞれが輝く場面を、実在しそうな人物たちの視点で描いた6篇。
+      </p>
+      <div class="hero-tags">
+        <span class="tag dify">● Dify — 4話</span>
+        <span class="tag claude">● Claude Code — 2話</span>
+      </div>
+    </div>
+
+    <!-- ─────────── STORY 1 ─────────── -->
+    <section class="story dify-story" id="s1">
+      <div class="story-header">
+        <div class="story-badge dify"><span class="dot"></span>Dify</div>
+        <div class="story-num">Story 01</div>
+        <h2>「誰に聞けばいい？」がなくなった日</h2>
+        <div class="story-subtitle">── 田中麻衣と社内ナレッジの迷宮 ──</div>
+      </div>
+
+      <div class="character-card">
+        <div class="character-icon dify">👩‍💼</div>
+        <div class="character-info">
+          <h3>田中麻衣、34歳</h3>
+          <p>SaaS企業の人事・総務リーダー。社員240名。入社してくる人が毎月5〜8名いる。<br>「経費精算のルールどこ？」「有給の申請ってどうするの？」同じ質問が毎日届く。</p>
+        </div>
+      </div>
+
+      <h3>問題</h3>
+      <p>田中のSlackには毎日20〜30件の質問が飛んでくる。</p>
+      <pre>「育児休暇の取得要件ってどこに書いてありますか？」
+「在宅勤務の際のセキュリティポリシー、最新版はどれ？」
+「交通費の上限ってたしか変わりましたよね？」</pre>
+      <p>全部、どこかに書いてある。社内Wikiに、Confluenceに、古いPDFに。<br>問題は「どこにあるかを知っているのが田中だけ」ということだった。</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>状況</th><th>内容</th></tr>
+          <tr><td>社内規程ドキュメント</td><td>87ファイル（更新日がバラバラ）</td></tr>
+          <tr><td>田中への質問数</td><td>1日平均25件</td></tr>
+          <tr><td>回答にかかる時間</td><td>1件3〜8分（ドキュメントを探す時間込み）</td></tr>
+          <tr><td>本来やりたい仕事</td><td>採用・研修・エンゲージメント施策</td></tr>
+        </table>
+      </div>
+
+      <h3>Difyと出会う</h3>
+      <p>社内のエンジニアが「Difyって知ってる？ ドキュメント突っ込むと質問に答えてくれるやつ」と言ったのが始まりだった。</p>
+      <p>田中はプログラムを書いたことがない。でも試してみた。</p>
+
+      <h3>実装：ナレッジベースを作る</h3>
+      <p>DifyのKnowledgeタブを開き、「社内規程」ナレッジベースを作成した。</p>
+      <pre>ドラッグ&ドロップしたもの：
+✓ 就業規則.pdf
+✓ 経費精算ガイド_2025年度版.docx
+✓ 育児・介護休業規程.pdf
+✓ テレワーク規程.pdf
+✓ セキュリティポリシー.pdf
+✓ 福利厚生一覧.xlsx → CSV変換
+...計31ファイル</pre>
+      <p>チャンク戦略：<strong>Q&A方式</strong>（よくある質問の形に分割）<br>検索方式：<strong>ハイブリッド</strong>（語句の完全一致も拾えるように）</p>
+
+      <h3>Chatbotをデプロイする</h3>
+      <p>「Chatbot」アプリを作成。Knowledge Retrievalノードと LLMノードを繋いで、プロンプトを書いた：</p>
+      <pre>あなたは「タムラ精工の人事アシスタント」です。
+社員からの質問に社内規程を根拠として回答してください。
+
+ルール：
+- 回答の末尾に「根拠：{出典ドキュメント名}」を必ず書く
+- 規程に書かれていないことは「規程に記載がありません。
+  人事部（mai.tanaka@）にご確認ください」と答える
+- 古い情報を断言しない</pre>
+
+      <h3>最初の壁</h3>
+      <p>テストしていると、問題が出た。</p>
+      <div class="callout warn">
+        <strong>Q：「交通費の上限はいくらですか？」</strong><br>
+        A：「月額50,000円です。（根拠：交通費規程2022年版）」<br><br>
+        → 実際は2024年に70,000円に改定されていた。古いPDFを読んでいた。
+      </div>
+      <p>原因：古いバージョンのPDFも誤ってアップロードしていた。<br>対処：ナレッジベースから古いファイルを削除し、各ドキュメントに「有効期限」をメモとして追加。プロンプトに「最新日付のものを優先せよ」を追加。</p>
+      <div class="callout info">
+        <strong>学び：</strong> AIは「どれが最新か」を自動判断しない。ドキュメント管理の責任は人間にある。
+      </div>
+
+      <h3>Human Inputノードを追加する</h3>
+      <p>懲戒・解雇・給与変更に関わる質問は、AIが直接答えるのは危険だと判断した。</p>
+      <p>フローを改修：Question Classifierで「センシティブな質問」を検出 → Human Inputノードで田中に確認を回す。それ以外は自動応答。</p>
+      <pre>センシティブ判定のキーワード例：
+「懲戒」「解雇」「降給」「内部告発」「ハラスメント」
+「労働基準監督署」「訴訟」「弁護士」</pre>
+
+      <h3>2ヶ月後</h3>
+      <div class="result-box">
+        <h4>効果</h4>
+        <div class="result-grid">
+          <div class="result-item good">
+            <div class="result-num">82%</div>
+            <div class="result-label">質問の自動解決率</div>
+          </div>
+          <div class="result-item good">
+            <div class="result-num">−4.2h</div>
+            <div class="result-label">田中の毎日の時間</div>
+          </div>
+          <div class="result-item dify">
+            <div class="result-num">97%</div>
+            <div class="result-label">回答の根拠明示率</div>
+          </div>
+          <div class="result-item good">
+            <div class="result-num">0件</div>
+            <div class="result-label">センシティブ案件の誤自動回答</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pull-quote dify">「『誰に聞けばいい？』という質問が消えた。<br>次は『どう制度を改善するか』を考える時間ができた」</div>
+
+      <div class="features-used">
+        <h4>使ったDify機能</h4>
+        <div class="feature-chips">
+          <span class="chip dify">Knowledge Base (RAG)</span>
+          <span class="chip dify">Chatbot</span>
+          <span class="chip dify">Knowledge Retrieval ノード</span>
+          <span class="chip dify">Question Classifier</span>
+          <span class="chip dify">Human Input ノード</span>
+          <span class="chip dify">LLM ノード</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── STORY 2 ─────────── -->
+    <section class="story dify-story" id="s2">
+      <div class="story-header">
+        <div class="story-badge dify"><span class="dot"></span>Dify</div>
+        <div class="story-num">Story 02</div>
+        <h2>提案書が、3日から3時間になった</h2>
+        <div class="story-subtitle">── 井上健太と営業の非効率 ──</div>
+      </div>
+
+      <div class="character-card">
+        <div class="character-icon dify">👨‍💼</div>
+        <div class="character-info">
+          <h3>井上健太、28歳</h3>
+          <p>ITコンサル会社の営業。月に10〜15社の提案書を作る。<br>提案書1本に平均2日半。スライド30枚、見積もり付き。毎回ゼロから書いている。</p>
+        </div>
+      </div>
+
+      <h3>問題</h3>
+      <p>提案書を書く時間が長すぎた。</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>フェーズ</th><th>時間</th></tr>
+          <tr><td>ヒアリングシートの整理</td><td>2時間</td></tr>
+          <tr><td>類似案件の資料を探す</td><td>3時間</td></tr>
+          <tr><td>提案書の骨格を書く</td><td>4時間</td></tr>
+          <tr><td>見積もりの計算・表作成</td><td>3時間</td></tr>
+          <tr><td>上司レビュー対応・修正</td><td>3時間</td></tr>
+          <tr><td><strong>合計</strong></td><td><strong>約15時間</strong></td></tr>
+        </table>
+      </div>
+      <p>月15本作ると、225時間が提案書だけに消える。月の稼働時間の半分以上だ。</p>
+
+      <h3>設計：どこを自動化するか</h3>
+      <p>井上は考えた。全部AIに任せるのではなく、「自分が考えるべき部分」と「コピペ作業な部分」を分ける。</p>
+      <pre>自分がやること：ヒアリング、課題の理解、最終判断
+AIに任せること：
+  - ヒアリング内容から提案骨格の生成
+  - 過去案件から類似実績の抽出
+  - 工数・見積もり表の計算
+  - 提案書Markdownの初稿作成</pre>
+
+      <h3>ワークフローを組む</h3>
+      <p>Difyで「Workflow」アプリを作成した。</p>
+      <p><strong>INPUT：</strong> ヒアリングシート（テキスト貼り付け）+ 顧客業種 + 予算感</p>
+      <pre>【ノード構成】
+
+START
+  └→ LLMノード①「課題分析」
+        顧客の課題を5点に整理する
+  └→ Knowledge Retrieval「類似案件検索」
+        過去30件の実績ナレッジから最類似案件を3件取得
+  └→ Iterationノード「提案要素生成」
+        課題5点それぞれに対して：
+          └→ LLMノード「解決策生成」（並列×5）
+  └→ HTTP Requestノード「見積もりAPI」
+        社内の工数計算APIを叩く
+  └→ LLMノード②「提案書Markdown生成」
+        全情報を統合して30枚分の初稿を生成
+  └→ Human Inputノード「上司確認」
+        ⚠ 提案金額が500万円超の場合のみ発動
+  └→ END（Markdown出力）</pre>
+
+      <h3>Iterationノードとの格闘</h3>
+      <p>最初に詰まったのがIterationノードだった。</p>
+      <div class="callout warn">
+        <strong>問題：</strong> 課題5点を並列処理しようとしたが、Iterationノードが3つ目で止まる。<br>Difyの既知バグ（ループ変数のリセット問題）。
+      </div>
+      <p>対処：並列をやめて直列処理に変更。代わりにVariable Aggregatorノードで5つの結果をまとめる。速度は落ちたが安定した。</p>
+      <div class="callout info">
+        <strong>学び：</strong> ループ系ノードは2026年5月時点でバグあり。大事なフローには使わない方が安全。
+      </div>
+
+      <h3>見積もりAPIの連携</h3>
+      <p>社内の工数計算システム（Excel + VBA）にはAPIがなかった。<br>エンジニアに頼んで、シンプルなREST APIを1日で作ってもらった。</p>
+      <pre>POST /api/estimate
+{
+  "project_type": "ECサイト構築",
+  "requirements": ["決済機能", "在庫管理", "多言語対応"],
+  "deadline_weeks": 12
+}
+
+→ {"man_months": 8.5, "cost_range": {"min": 4250000, "max": 5100000}}</pre>
+      <p>このAPIをDifyのHTTP Requestノードから叩くだけで、見積もりが提案書に自動で入る。</p>
+
+      <h3>3ヶ月後</h3>
+      <div class="result-box">
+        <h4>効果</h4>
+        <div class="result-grid">
+          <div class="result-item good">
+            <div class="result-num">15h→3h</div>
+            <div class="result-label">提案書1本にかかる時間</div>
+          </div>
+          <div class="result-item good">
+            <div class="result-num">+6本/月</div>
+            <div class="result-label">提案書の増加数</div>
+          </div>
+          <div class="result-item dify">
+            <div class="result-num">+31%</div>
+            <div class="result-label">受注率（上司談）</div>
+          </div>
+        </div>
+      </div>
+      <p>受注率が上がった理由を上司が分析した。「類似実績が必ず3件入るから、お客さんの安心感が上がってる」。</p>
+
+      <div class="pull-quote dify">提案書を書く速度が上がったのではなく、<br>「考える時間」の割合が増えた。</div>
+
+      <div class="features-used">
+        <h4>使ったDify機能</h4>
+        <div class="feature-chips">
+          <span class="chip dify">Workflow</span>
+          <span class="chip dify">Knowledge Retrieval ノード</span>
+          <span class="chip dify">Iteration ノード</span>
+          <span class="chip dify">HTTP Request ノード</span>
+          <span class="chip dify">Variable Aggregator</span>
+          <span class="chip dify">Human Input ノード（条件付き）</span>
+          <span class="chip dify">LLM ノード × 複数</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── STORY 3 ─────────── -->
+    <section class="story dify-story" id="s3">
+      <div class="story-header">
+        <div class="story-badge dify"><span class="dot"></span>Dify</div>
+        <div class="story-num">Story 03</div>
+        <h2>月曜朝9時、競合レポートが届いていた</h2>
+        <div class="story-subtitle">── 橘沙織と情報収集の終わりなき戦い ──</div>
+      </div>
+
+      <div class="character-card">
+        <div class="character-icon dify">👩‍💻</div>
+        <div class="character-info">
+          <h3>橘沙織、31歳</h3>
+          <p>SaaS企業のマーケティングマネージャー。毎週月曜の経営会議で「競合動向レポート」を出す義務がある。<br>競合は8社。毎週金曜の午後を、サイトとSNSのチェックに使っていた。</p>
+        </div>
+      </div>
+
+      <h3>問題</h3>
+      <p>毎週金曜の午後2時間を「競合監視」が占領していた。</p>
+      <pre>確認するもの（毎週）：
+- 競合8社のブログ・プレスリリース（新記事チェック）
+- 競合8社のTwitter/LinkedIn（週間投稿サマリー）
+- G2・Capterra・Review.io（新レビューの確認）
+- 競合の料金ページ（価格変更のチェック）
+- 自社キーワードのSEO順位変動
+
+→ 全部手作業。漏れも多い。</pre>
+
+      <h3>設計</h3>
+      <p>Difyの<strong>Triggerノード</strong>（v1.14〜）を使えば、スケジュールで自動実行できる。</p>
+      <pre>毎週日曜22:00に自動起動
+  ↓
+【Iteration】競合8社をループ
+  └→ HTTP Requestノード：各社ブログのRSS取得
+  └→ HTTP Requestノード：Twitter API（週間投稿取得）
+  └→ HTTP Requestノード：G2レビューページ取得
+  └→ LLMノード：「今週の動向を3行でまとめて」
+  ↓
+【Conditionノード】重要度判定
+  └→ 「価格変更」「新機能」「資金調達」を含む → HIGH
+  └→ それ以外 → NORMAL
+  ↓
+LLMノード：週次レポートMarkdown生成
+  ↓
+HTTP Requestノード：SlackのIncoming WebhookへPOST
+  └→ HIGH案件は @channel 付きで即時通知
+  └→ NOMALはレポートにまとめて月曜9時配信</pre>
+
+      <h3>壁：Webスクレイピングの制限</h3>
+      <p>HTTP Requestノードでブログを取得しようとしたが、JavaScriptで動的レンダリングするサイトはHTMLが取れなかった。</p>
+      <div class="callout warn">
+        <strong>問題：</strong> 競合8社中5社のブログがSPA（React/Next.js）。HTTP Requestでは中身が空のHTMLしか返ってこない。
+      </div>
+      <p>解決策：RSSが存在する3社はRSSを使用。残り5社は<code>Jina AI Reader API</code>（URLを渡すとMarkdown化してくれる無料API）を挟んだ。</p>
+      <pre>GET https://r.jina.ai/https://competitor.com/blog
+→ Markdownテキストを返す（JavaScript実行済み）</pre>
+      <div class="callout info">
+        <strong>学び：</strong> DifyのHTTP RequestはHTMLを取るだけ。JS描画が必要なサイトには外部のReader APIを挟む。
+      </div>
+
+      <h3>Conditionノードの精度チューニング</h3>
+      <p>最初、「価格」「新機能」をキーワードでConditionノードに書いたが、誤検知が多かった。</p>
+      <p>対処：Conditionノードの条件式の代わりに、LLMノードに重要度を0〜5でスコアリングさせ、その数値でConditionを組んだ。</p>
+      <pre>LLMノード出力：
+{"importance_score": 4, "reason": "競合Aが価格を20%値下げ"}
+
+Conditionノード：
+importance_score >= 4 → HIGH通知
+importance_score < 4  → 通常レポートに収録</pre>
+
+      <h3>3ヶ月後</h3>
+      <div class="result-box">
+        <h4>効果</h4>
+        <div class="result-grid">
+          <div class="result-item good">
+            <div class="result-num">0h</div>
+            <div class="result-label">沙織の毎週の情報収集時間</div>
+          </div>
+          <div class="result-item dify">
+            <div class="result-num">8社→12社</div>
+            <div class="result-label">監視対象（追加が楽に）</div>
+          </div>
+          <div class="result-item good">
+            <div class="result-num">3件</div>
+            <div class="result-label">競合の価格変更を先に把握（対応できた）</div>
+          </div>
+        </div>
+      </div>
+      <p>「自分で調べていた頃は土日に気づいていた情報を、今は日曜夜に自動でSlackに来る。月曜の会議で僕が一番詳しい人間になれた」と沙織は言った。</p>
+
+      <div class="pull-quote dify">収集をやめたのではなく、<br>収集の主体を「自分」から「システム」に変えた。</div>
+
+      <div class="features-used">
+        <h4>使ったDify機能</h4>
+        <div class="feature-chips">
+          <span class="chip dify">Trigger ノード（スケジュール起動）</span>
+          <span class="chip dify">Iteration ノード</span>
+          <span class="chip dify">HTTP Request ノード</span>
+          <span class="chip dify">Condition ノード</span>
+          <span class="chip dify">LLM ノード（重要度スコアリング）</span>
+          <span class="chip dify">Slack Webhook 連携</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── STORY 4 ─────────── -->
+    <section class="story dify-story" id="s4">
+      <div class="story-header">
+        <div class="story-badge dify"><span class="dot"></span>Dify</div>
+        <div class="story-num">Story 04</div>
+        <h2>0.3秒で分類して、3分で返す</h2>
+        <div class="story-subtitle">── 小坂雄太とカスタマーサポートの反乱 ──</div>
+      </div>
+
+      <div class="character-card">
+        <div class="character-icon dify">👨‍🔧</div>
+        <div class="character-info">
+          <h3>小坂雄太、32歳</h3>
+          <p>アパレルEC「SPOOL」のCSリーダー。チームは自分を含めて3人。1日受信メール約280通。</p>
+        </div>
+      </div>
+
+      <h3>問題</h3>
+      <p>毎朝9時のメールボックスに「未読 284件」。</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>メール種別</th><th>割合</th><th>処理時間/件</th></tr>
+          <tr><td>配送状況の問い合わせ</td><td>38%</td><td>3分</td></tr>
+          <tr><td>返品・交換の申請</td><td>22%</td><td>8分</td></tr>
+          <tr><td>サイズ・素材の質問</td><td>19%</td><td>5分</td></tr>
+          <tr><td>クレーム・感情的な内容</td><td>12%</td><td>25分</td></tr>
+          <tr><td>その他</td><td>9%</td><td>10分</td></tr>
+        </table>
+      </div>
+      <p>問題はクレームだった。怒っているメールを読むたびに集中力が削られ、決まった答えがある配送問い合わせを処理していると、本当に頭を使うべきクレーム対応の質が落ちる。</p>
+
+      <h3>設計思想</h3>
+      <p>「完全自動化」ではなく「<strong>人間の判断を最小限のところだけ使う</strong>」。クレームだけは人間が書く。それ以外はAIが下書きを作り、人間が承認する。</p>
+
+      <h3>Chatflowの構成</h3>
+      <pre>メール受信（Webhook）
+  ↓
+Question Classifierノード（5クラス）
+  ├─ 配送照会 → 注文API呼び出し → LLM生成 → Human Input
+  ├─ 返品申請 → FAQ検索 → LLM生成 → Human Input
+  ├─ 商品質問 → Knowledge Retrieval → LLM生成 → Human Input
+  ├─ クレーム → Codeノード（緊急度スコア）→ Human Input（担当者直送）
+  └─ その他  → FAQ検索 → LLM生成 → Human Input
+  ↓
+HTTP Requestノード（SendGridでメール送信）</pre>
+
+      <h3>Question Classifierの精度チューニング</h3>
+      <p>最初に詰まったのが分類の精度だった。</p>
+      <div class="callout warn">
+        <strong>誤分類例：</strong><br>
+        「届いた商品の色が写真と違います。返品したいです」<br>
+        → 「商品の質問」に分類（正解は「返品申請」）
+      </div>
+      <p>クラスの説明文を書き直した：</p>
+      <pre>【修正後のクラス2の説明】
+返品・交換を希望している。届いた商品に問題がある。
+写真と違う・サイズが合わない・破損していた。
+こういった場合はすべてクラス2。</pre>
+      <div class="callout info">
+        <strong>学び：</strong> Question Classifierの「ノード」はコードではなくプロンプト。例外ケースを説明文に書くと精度が上がる。
+      </div>
+
+      <h3>2週目：本番投入結果</h3>
+      <div class="result-box">
+        <h4>初日の実績（267通）</h4>
+        <div class="result-grid">
+          <div class="result-item good">
+            <div class="result-num">94.1%</div>
+            <div class="result-label">分類精度</div>
+          </div>
+          <div class="result-item good">
+            <div class="result-num">8.3→1.4分</div>
+            <div class="result-label">一人あたり処理時間/通</div>
+          </div>
+          <div class="result-item dify">
+            <div class="result-num">86.5%</div>
+            <div class="result-label">AIの下書きをそのまま承認</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>本当の変化</h3>
+      <p>3週目に入ったある日、村田が言った。</p>
+      <div class="dialogue">
+        <div class="dialogue-line">
+          <span class="dialogue-speaker">村田</span>
+          <span class="dialogue-text">小坂さん、お客さんへの返信、なんか丁寧になってると思うんですよ</span>
+        </div>
+        <div class="dialogue-line">
+          <span class="dialogue-speaker">小坂</span>
+          <span class="dialogue-text">AIの文章だから？</span>
+        </div>
+        <div class="dialogue-line">
+          <span class="dialogue-speaker">村田</span>
+          <span class="dialogue-text">いや、<strong>僕たちの文章が</strong>。</span>
+        </div>
+      </div>
+      <p>以前は配送照会メールを1日90通さばいていたから、後半は雑になっていた。今は確認作業になったので1通1通ちゃんと読んでいる。AIが書いた下書きのトーンを「人間らしいちょうどいい温度感」に修正するうちに、それがプロンプトに蓄積されていった。</p>
+
+      <div class="pull-quote dify">Difyが変えたのは、メールの処理速度ではなかった。<br>チームが何に時間を使うか、だった。</div>
+
+      <div class="features-used">
+        <h4>使ったDify機能</h4>
+        <div class="feature-chips">
+          <span class="chip dify">Chatflow</span>
+          <span class="chip dify">Question Classifier</span>
+          <span class="chip dify">Knowledge Retrieval</span>
+          <span class="chip dify">HTTP Request（注文API + SendGrid）</span>
+          <span class="chip dify">Code ノード（Python）</span>
+          <span class="chip dify">Human Input ノード</span>
+          <span class="chip dify">Condition ノード</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── STORY 5 ─────────── -->
+    <section class="story claude-story" id="s5">
+      <div class="story-header">
+        <div class="story-badge claude"><span class="dot"></span>Claude Code</div>
+        <div class="story-num">Story 05</div>
+        <h2>眠っている間に、コードが変わっていた</h2>
+        <div class="story-subtitle">── 山下拓也と3年分の技術的負債 ──</div>
+      </div>
+
+      <div class="character-card">
+        <div class="character-icon claude">👨‍💻</div>
+        <div class="character-info">
+          <h3>山下拓也、29歳</h3>
+          <p>フリーランスエンジニア。3年前に作ったSaaS「ShiftBoard」を一人で運営。有料ユーザー320社、月次ARR 280万円。チームは自分だけ。</p>
+        </div>
+      </div>
+
+      <h3>問題</h3>
+      <p>午前2時、またアラートが鳴った。</p>
+      <pre>ERROR: Cannot read property 'id' of undefined
+    at processShift (/app/services/shift.js:847)</pre>
+      <p><code>shift.js</code> 847行目。このファイルは3年前に自分が書いた。コメントなし、型なし、テストなし。直す前に「何をしているコードか」を理解するのに30分かかる。この1年で3回同じ場所を「直した」。毎回別の場所が壊れた。</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>技術的負債の項目</th><th>見積もり（一人で）</th></tr>
+          <tr><td>JavaScript → TypeScript化</td><td>6週間</td></tr>
+          <tr><td>テストカバレッジ 0% → 70%</td><td>8週間</td></tr>
+          <tr><td>APIレスポンスの型定義</td><td>3週間</td></tr>
+          <tr><td>エラーハンドリング統一</td><td>2週間</td></tr>
+          <tr><td><strong>合計</strong></td><td><strong>約19週間</strong></td></tr>
+        </table>
+      </div>
+
+      <h3>Twitterで見たポスト</h3>
+      <div class="callout claude-tip">
+        「Claude Code Dynamic Workflowsで <code>workflow</code> って打ったら、750,000行のRustコード生成して2,188ファイル変更してくれた。11日でPRがマージされた。」<br>
+        — Jarred Sumner（Bun作者）
+      </div>
+
+      <h3>まず現状を把握させる</h3>
+      <pre>このコードベース全体を分析して。
+問題の深刻度、依存関係のグラフ、移行の難易度を教えて。</pre>
+      <p>Claudeは黙って数分間、全ファイルを読んだ。</p>
+      <pre>分析完了。
+
+リポジトリ概要：
+- 総ファイル数: 312ファイル / 総行数: 47,823行
+
+主要な問題：
+1. 循環依存: 8箇所（shift.js ↔ user.js ↔ schedule.js）
+2. 暗黙のany相当: 全ファイルで確認（型情報ゼロ）
+3. エラーハンドリング: try-catchあり23箇所、なし187箇所
+4. テスト: 0件
+
+⚠ 特に危険: billing.js:234
+  エラー時に課金が二重実行される可能性</pre>
+      <p>「billing.jsに二重課金のバグがある」という行で、山下は顔色が変わった。</p>
+
+      <h3>緊急修正（5分）</h3>
+      <pre>billing.js:234の二重課金バグを修正して。
+修正後に課金フローのテストを書いて確認して。</pre>
+      <pre>問題: エラーハンドリング内でreturnが抜けており、
+     Stripe API失敗時もDBへの課金レコード書き込みが実行される。
+
+[billing.js を編集]
+[billing.test.js を新規作成 — 12テストケース]
+[npm test を実行]
+
+✓ 12 tests passed (0 failed)
+✓ Stripe APIタイムアウト時の二重課金なし確認
+✓ ネットワーク切断時の安全なロールバック確認</pre>
+
+      <h3>本番：Dynamic Workflowsで大規模移行</h3>
+      <pre>workflow
+
+このプロジェクト全体をTypeScriptに移行して。
+移行後のテストカバレッジを70%以上にして。
+既存の動作は一切壊さないこと。</pre>
+      <p>Claudeが計画を表示した：</p>
+      <pre>Dynamic Workflow を生成中...
+
+Phase A（並列）: 型定義ファイル群を作成
+  Agent 1: ユーザー・認証系の型
+  Agent 2: シフト・スケジュール系の型
+  Agent 3: 課金・プラン系の型
+  Agent 4: API レスポンス型
+
+Phase B（並列）: サービス層のTS化
+
+Phase C（並列）: テスト作成（Phase Bと同時進行）
+
+Phase D（直列）: 統合テスト・型チェック
+  tsc --noEmit でゼロエラーを確認
+  失敗した場合は該当Agentが自動修正
+
+Phase E（検証）: 敵対的クロスチェック
+  別エージェントが変更箇所を独立レビュー</pre>
+      <p>「実行する」と打って、山下は<strong>寝た</strong>。</p>
+
+      <h3>翌朝</h3>
+      <pre>WORKFLOW: TypeScript移行 — 完了 ✓ (8時間23分)
+
+結果:
+  変換ファイル: 312/312
+  型エラー: 0件
+  テスト: 847件 (カバレッジ: 74.3%)
+  破壊的変更: 0件（敵対的検証で確認済み）
+
+自動修正した問題:
+  - 暗黙のany: 1,247件 → 適切な型推論に変換
+  - 循環依存: 8箇所 → 依存の方向を統一して解消
+  - null チェック漏れ: 394件 → Optional chainingに変換</pre>
+
+      <h3>壁：CIのTypeScriptバージョン違い</h3>
+      <p>PRを見るとCIが赤かった。CIのTypeScriptが<code>4.9</code>で、Claudeがローカルで使ったのは<code>5.3</code>。</p>
+      <pre>CIのTypeScriptが4.9。このエラーを全部直して。</pre>
+      <pre>問題: satisfies演算子（TS4.9未満では未対応）が43箇所、
+     const型引数（TS5.0+のみ）が12箇所。
+
+全箇所を互換構文に置換します。
+[55ファイルを編集]
+
+完了。</pre>
+      <p>15分後：<code>✓ CI passed (tsc: 0 errors, 847 tests passed)</code></p>
+
+      <h3>結果</h3>
+      <div class="result-box">
+        <h4>移行前後の比較</h4>
+        <div class="result-grid">
+          <div class="result-item claude">
+            <div class="result-num">0%→74%</div>
+            <div class="result-label">テストカバレッジ</div>
+          </div>
+          <div class="result-item good">
+            <div class="result-num">0件</div>
+            <div class="result-label">移行後2ヶ月の夜間アラート</div>
+          </div>
+          <div class="result-item claude">
+            <div class="result-num">2.5h</div>
+            <div class="result-label">山下が実際に使った時間</div>
+          </div>
+          <div class="result-item good">
+            <div class="result-num">19週→1日</div>
+            <div class="result-label">当初見積もり vs 実際</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pull-quote claude">「じゃあ、僕はプログラマーってことでいいのか」<br>
+      <span style="font-size:14px;font-weight:300">— 山下拓也、翌朝コーヒーを飲みながら</span></div>
+
+      <div class="features-used">
+        <h4>使ったClaude Code機能</h4>
+        <div class="feature-chips">
+          <span class="chip claude">コードベース全体解析</span>
+          <span class="chip claude">Dynamic Workflows</span>
+          <span class="chip claude">並列サブエージェント実行</span>
+          <span class="chip claude">敵対的クロスチェック（Phase E）</span>
+          <span class="chip claude">テスト自動生成</span>
+          <span class="chip claude">TypeScript型エラー自動修正</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── STORY 6 ─────────── -->
+    <section class="story claude-story" id="s6">
+      <div class="story-header">
+        <div class="story-badge claude"><span class="dot"></span>Claude Code</div>
+        <div class="story-num">Story 06</div>
+        <h2>「コードって何ですか？」と聞いた経営者</h2>
+        <div class="story-subtitle">── 田村悟と、Excelに埋まった3年分の真実 ──</div>
+      </div>
+
+      <div class="character-card">
+        <div class="character-icon claude">🏭</div>
+        <div class="character-info">
+          <h3>田村悟、47歳</h3>
+          <p>金属加工の町工場「タムラ精工」の二代目社長。従業員22名。PCは使える。Excelも「まあ使える」と思っている。SUM関数とVLOOKUPは書けた。昔は。</p>
+        </div>
+      </div>
+
+      <h3>問題</h3>
+      <p>銀行から電話が来た。「過去3年分の月別・製品別の利益率推移を出してほしい」。田村は「わかりました」と答えて電話を切り、デスクの引き出しを開けた。</p>
+      <pre>2023年売上.xlsx
+2023年売上（確定版）.xlsx
+2023年売上（確定版・修正後）.xlsx
+2024年売上_1月.xlsx
+...（計23ファイル）
+
+製品コードの表記：
+  「A-001」「A001」「製品001」が混在
+原価：為替によって月ごとに変動
+提出期限：5日後</pre>
+      <p>「3日かかる。いや1週間かも」</p>
+
+      <h3>息子からのLINE</h3>
+      <div class="dialogue">
+        <div class="dialogue-line">
+          <span class="dialogue-speaker">息子</span>
+          <span class="dialogue-text">親父、Claude Code使ってみて。コード書けなくても、ファイル渡すだけで分析してくれるから。インストールだけしといて</span>
+        </div>
+        <div class="dialogue-line">
+          <span class="dialogue-speaker">田村</span>
+          <span class="dialogue-text">コードって何ですか？</span>
+        </div>
+        <div class="dialogue-line">
+          <span class="dialogue-speaker">息子</span>
+          <span class="dialogue-text">とりあえずインストールだけ。あとはしゃべりかけるだけでいいから</span>
+        </div>
+      </div>
+
+      <h3>最初の5分間</h3>
+      <p>黒い画面が開いた。田村は思い切って打った：</p>
+      <pre>Excelファイルが23個あります。
+銀行に出す資料を作りたいです。
+月別・製品別の利益率推移のグラフが必要です。
+どうすればいいですか？</pre>
+      <pre>わかりました。一緒にやりましょう。
+
+まずExcelファイルがどこにあるか教えてください。
+全部同じフォルダにありますか？</pre>
+
+      <h3>Claudeが見つけたもの</h3>
+      <p>フォルダパスを伝えて数分後：</p>
+      <pre>23ファイルを確認しました。いくつか問題が見つかりました：
+
+1. 製品コードの表記ゆれ
+   「A-001」「A001」「製品001」が同じ製品を指している
+
+2. 原価シートが別ファイル（原価計算_新.xlsx）にある
+
+3. 2024年1月〜3月のファイルに「為替調整」列がない
+
+⚠ 気になる点：
+  製品「B-005」の利益率が2024年7月から急落（28%→11%）
+  製品「C-012」は売上増加だが利益率が年々低下
+  （2022年:22%→2025年:14%）</pre>
+      <p>田村は画面を見て固まった。<br>C-012は「よく売れる製品」だと思っていた。数字だけ見ていたから、利益率が侵食されていたことを3年間見落としていた。</p>
+
+      <h3>グラフ作成</h3>
+      <pre>銀行に提出するグラフを作ってください。
+A4サイズで印刷できる形式で。</pre>
+      <p>5分後、<code>分析レポート.pdf</code>ができていた。グラフ6枚、数字が整理されていた。フォントも揃っていて、銀行に出しても恥ずかしくない見た目だった。</p>
+
+      <h3>翌日：銀行からの追加質問</h3>
+      <p>「2023年度の第3四半期だけ利益率が突出して高いんですが、理由を教えていただけますか？」</p>
+      <pre>2023年7月〜9月の利益率が高い理由を
+データから読み取れますか？</pre>
+      <pre>確認しました。この期間に2つの要因が重なっています：
+
+1. 「A-003（ステンレスシャフト）」への大口受注
+   通常の月の4.2倍の売上
+   大口受注は固定費が分散されるため利益率が高くなります
+
+2. 原材料のニッケル価格が前期比12%低下
+   （原価計算_新.xlsxのデータより）
+
+銀行への説明文を作りましょうか？</pre>
+      <pre>作ってください</pre>
+      <p>Claudeが書いた説明文をそのままメールに貼って送った。</p>
+
+      <h3>融資は通った</h3>
+      <div class="result-box">
+        <h4>田村が使った時間</h4>
+        <div class="result-grid">
+          <div class="result-item warn">
+            <div class="result-num">1週間</div>
+            <div class="result-label">当初の見積もり</div>
+          </div>
+          <div class="result-item claude">
+            <div class="result-num">半日</div>
+            <div class="result-label">実際にかかった時間</div>
+          </div>
+          <div class="result-item good">
+            <div class="result-num">3年分</div>
+            <div class="result-label">見落としていた利益率低下を把握</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dialogue">
+        <div class="dialogue-line">
+          <span class="dialogue-speaker">田村</span>
+          <span class="dialogue-text">あれ、すごいな。3日かかると思ってたのが半日で終わった</span>
+        </div>
+        <div class="dialogue-line">
+          <span class="dialogue-speaker">息子</span>
+          <span class="dialogue-text">コード書いたの？</span>
+        </div>
+        <div class="dialogue-line">
+          <span class="dialogue-speaker">田村</span>
+          <span class="dialogue-text">書いてない。全部しゃべっただけ</span>
+        </div>
+      </div>
+
+      <div class="pull-quote claude">コードは「目的を達成するための手段」でしかなかった。<br>田村は目的だけを語った。手段はClaudeが選んだ。</div>
+
+      <div class="callout claude-tip" style="margin-top:32px">
+        <strong>非エンジニアがClaude Codeを使うときの本質：</strong><br><br>
+        プログラマーが書くもの：<code>def calculate_profit_rate(revenue, cost): ...</code><br><br>
+        田村が書いたもの：「利益率を計算して製品別に比較してください」<br><br>
+        Claudeがやっていること：田村の言葉 → コード → 実行 → 結果 → 田村の言葉
+      </div>
+
+      <div class="features-used">
+        <h4>使ったClaude Code機能</h4>
+        <div class="feature-chips">
+          <span class="chip claude">Excelファイル読み込み・解析</span>
+          <span class="chip claude">表記ゆれの自動統一</span>
+          <span class="chip claude">pandas でデータ集計</span>
+          <span class="chip claude">matplotlib でPDF生成</span>
+          <span class="chip claude">データから異常値・傾向を発見</span>
+          <span class="chip claude">自然文での説明文生成</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<a class="scroll-top" href="#" title="トップへ戻る">↑</a>
+
+<script>
+  // Active nav highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(item => item.classList.remove('active'));
+        const active = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
