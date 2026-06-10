@@ -10,8 +10,16 @@
         margin: 40px auto;
         color: #2b2b2b;
       }
-      label { display: block; margin: 16px 0 4px; font-size: 14px; }
-      input {
+      fieldset {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        padding: 12px 16px 16px;
+      }
+      legend { font-size: 14px; font-weight: bold; }
+      label { display: block; margin: 12px 0 4px; font-size: 14px; }
+      label.radio { font-weight: normal; cursor: pointer; }
+      input[type="password"], select {
         width: 100%;
         box-sizing: border-box;
         padding: 8px;
@@ -19,7 +27,6 @@
         border-radius: 6px;
       }
       button {
-        margin-top: 20px;
         padding: 10px 24px;
         border: none;
         border-radius: 8px;
@@ -28,21 +35,51 @@
         font-size: 14px;
         cursor: pointer;
       }
-      .note { font-size: 12px; color: #888; }
+      .note { font-size: 12px; color: #888; margin: 4px 0 0; }
       #saved { color: #27ae60; font-size: 13px; margin-left: 12px; }
     </style>
   </head>
   <body>
-    <h1>⚙️ APIキー設定</h1>
-    <p class="note">
-      キーはこの端末の拡張機能ストレージにのみ保存され、APIプロバイダ以外には送信されません。
-    </p>
+    <h1>⚙️ 設定</h1>
 
-    <label for="anthropicKey">Anthropic APIキー(プロンプト生成用)</label>
-    <input id="anthropicKey" type="password" placeholder="sk-ant-..." />
+    <fieldset>
+      <legend>動作モード</legend>
+      <label class="radio">
+        <input type="radio" name="mode" value="local" checked />
+        🆓 ローカル無料モード(おすすめ)
+      </label>
+      <p class="note">
+        Chrome内蔵AIで文字起こし(オンデバイス音声認識)とプロンプト生成(Gemini
+        Nano)を行います。APIキー不要・通信なし・完全無料。Chrome
+        139以降と空きディスク約22GBが必要です。
+      </p>
+      <label class="radio">
+        <input type="radio" name="mode" value="cloud" />
+        ☁️ クラウド高品質モード
+      </label>
+      <p class="note">
+        Whisper + Claude APIを使用。精度は高いですが下記のAPIキーが必要で、利用量に応じた従量課金が発生します。
+      </p>
 
-    <label for="openaiKey">OpenAI APIキー(Whisper文字起こし用)</label>
-    <input id="openaiKey" type="password" placeholder="sk-..." />
+      <label for="recogLang">文字起こし言語(無料モード用)</label>
+      <select id="recogLang">
+        <option value="ja-JP">日本語</option>
+        <option value="en-US">English (US)</option>
+      </select>
+    </fieldset>
+
+    <fieldset>
+      <legend>APIキー(クラウドモード用)</legend>
+      <p class="note">
+        キーはこの端末の拡張機能ストレージにのみ保存され、APIプロバイダ以外には送信されません。
+      </p>
+
+      <label for="anthropicKey">Anthropic APIキー(プロンプト生成用)</label>
+      <input id="anthropicKey" type="password" placeholder="sk-ant-..." />
+
+      <label for="openaiKey">OpenAI APIキー(Whisper文字起こし用)</label>
+      <input id="openaiKey" type="password" placeholder="sk-..." />
+    </fieldset>
 
     <button id="saveBtn">保存</button><span id="saved"></span>
 

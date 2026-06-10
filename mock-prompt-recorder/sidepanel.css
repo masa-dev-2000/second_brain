@@ -8,6 +8,12 @@ body {
 
 h1 {
   font-size: 16px;
+  margin: 0 0 4px;
+}
+
+.mode-label {
+  font-size: 11px;
+  color: #888;
   margin: 0 0 16px;
 }
 
@@ -49,6 +55,7 @@ button.accent {
   color: #777;
   margin: 8px 0 0;
   text-align: center;
+  white-space: pre-line;
 }
 
 label {

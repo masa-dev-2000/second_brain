@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "MockPrompt Recorder",
-  "version": "0.1.0",
-  "description": "会議やブレストをリアルタイム録音し、ワンボタンでプロダクトモック作成プロンプトを生成",
+  "version": "0.2.0",
+  "description": "会議やブレストをリアルタイム録音し、ワンボタンでプロダクトモック作成プロンプトを生成(Chrome内蔵AIで無料動作)",
   "permissions": ["tabCapture", "offscreen", "sidePanel", "storage", "activeTab"],
   "host_permissions": [
     "https://api.anthropic.com/*",
