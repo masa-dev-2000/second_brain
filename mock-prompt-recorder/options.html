@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>MockPrompt Recorder 設定</title>
+    <style>
+      body {
+        font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+        max-width: 480px;
+        margin: 40px auto;
+        color: #2b2b2b;
+      }
+      label { display: block; margin: 16px 0 4px; font-size: 14px; }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+      button {
+        margin-top: 20px;
+        padding: 10px 24px;
+        border: none;
+        border-radius: 8px;
+        background: #d97742;
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .note { font-size: 12px; color: #888; }
+      #saved { color: #27ae60; font-size: 13px; margin-left: 12px; }
+    </style>
+  </head>
+  <body>
+    <h1>⚙️ APIキー設定</h1>
+    <p class="note">
+      キーはこの端末の拡張機能ストレージにのみ保存され、APIプロバイダ以外には送信されません。
+    </p>
+
+    <label for="anthropicKey">Anthropic APIキー(プロンプト生成用)</label>
+    <input id="anthropicKey" type="password" placeholder="sk-ant-..." />
+
+    <label for="openaiKey">OpenAI APIキー(Whisper文字起こし用)</label>
+    <input id="openaiKey" type="password" placeholder="sk-..." />
+
+    <button id="saveBtn">保存</button><span id="saved"></span>
+
+    <script src="options.js"></script>
+  </body>
+</html>

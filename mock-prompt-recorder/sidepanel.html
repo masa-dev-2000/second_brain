@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>MockPrompt Recorder</title>
+    <link rel="stylesheet" href="sidepanel.css" />
+  </head>
+  <body>
+    <h1>🎙️ MockPrompt Recorder</h1>
+
+    <section>
+      <button id="recordBtn" class="primary">録音開始</button>
+      <p id="status" class="status">待機中</p>
+    </section>
+
+    <section>
+      <button id="generateBtn" class="accent" disabled>
+        ⚡ モックプロンプト生成
+      </button>
+    </section>
+
+    <section>
+      <label for="output">生成されたプロンプト</label>
+      <textarea id="output" rows="16" placeholder="ここに v0 / Figma Make / Claude にそのまま貼れるプロンプトが出力されます" readonly></textarea>
+      <button id="copyBtn" disabled>📋 コピー</button>
+    </section>
+
+    <footer>
+      <a href="#" id="openOptions">⚙️ APIキー設定</a>
+    </footer>
+
+    <script src="sidepanel.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "MockPrompt Recorder",
+  "version": "0.1.0",
+  "description": "会議やブレストをリアルタイム録音し、ワンボタンでプロダクトモック作成プロンプトを生成",
+  "permissions": ["tabCapture", "offscreen", "sidePanel", "storage", "activeTab"],
+  "host_permissions": [
+    "https://api.anthropic.com/*",
+    "https://api.openai.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "options_page": "options.html",
+  "action": {
+    "default_title": "MockPrompt Recorder を開く"
+  }
+}
